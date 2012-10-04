@@ -1,0 +1,32 @@
+using UnityEngine;
+using System.Collections;
+
+public class RocketAttributes : MonoBehaviour {
+	public float fuel;
+	public float health;
+	// Use this for initialization
+	void Start () {
+		//these are values i just made up and should probably be adjusted
+		fuel = 12;
+		health = 12;
+	}
+	
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
+	//i felt like there wasn't enough in this script so i wrote these methods
+	public float getFuel(){
+		return fuel;
+	}
+	public float getHealth(){
+		return health;
+	}
+	public void loseHealth(float damage){
+		health -= damage;
+	}
+	public void useFuel(float spent){
+		fuel -= spent;
+	}
+}
