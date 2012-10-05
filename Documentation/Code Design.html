@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Code Design Rev 00</title>
+  <title>Code Design</title>
 
 	<meta name="format" content="complete"/>
   <style type="text/css">
@@ -353,7 +353,7 @@ mark {
 <body>
   <div id="wrapper">
     <div id="content">
-<h1>Space Archery Base Engine - Rev. 01</h1>
+<h1>Space Archery Base Engine - Rev. 02</h1>
 
 <table>
 <colgroup>
@@ -468,6 +468,22 @@ mark {
 </ol></li>
 </ul></li>
 </ol>
+
+<h4>Object Details</h4>
+
+<p>All objects aside from Rocket and Player will be Unity primitives. Rocket and Player will be built as such:</p>
+
+<ul>
+<li>Object (Empty GO) - Scripts attached here
+
+<ul>
+<li>ObjectModel</li>
+</ul></li>
+</ul>
+
+<p>If we need anything more complex than this arrangement for this week, I&#8217;ll contact everyone and update the doc accordingly. Object scripts will control aspects of the ObjectModel in future iterations, but for the time being the ObjectModels are purely for display. </p>
+
+<p>Our objects are fairly independant in this build. The target will communicate to the (as-of-yet-unspecified) game manager when it&#8217;s been hit, and the rocket will do the same if it runs off the board and is destroyed. The game manager will then reset the game. Bow specifically instantiates the rocket upon releasing the mouse button, and passes in the launch velocity. Otherwise, everything keeps to itself.</p>
     </div>
   </div> <!-- End wrapper -->
 </body>
