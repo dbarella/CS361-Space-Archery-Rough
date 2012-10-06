@@ -6,11 +6,8 @@ public class RocketAttributes : MonoBehaviour {
 	public float health;
 	// Use this for initialization
 	void Start () {
-		//these are values i just made up and should probably be adjusted
-		fuel = 12;
-		health = 12;
+		//Pass
 	}
-	
 	
 	// Update is called once per frame
 	void Update () {

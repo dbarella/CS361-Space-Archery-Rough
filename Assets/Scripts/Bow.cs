@@ -10,7 +10,14 @@ public class Bow : MonoBehaviour{
 	//Angle between the x-axis and the user's cursor
     protected float theta;
 	
+	//Cursor texture
+	public Texture2D cursorImage;
+	
+	//Rocket GO
+	public GameObject rocket;
+	
     public void Start () {
+		Screen.showCursor = false;
 		//Pass
 	}
     
@@ -19,12 +26,14 @@ public class Bow : MonoBehaviour{
     }
 	
 	public void OnGUI() {
-		if(Event.current.type == EventType.MouseDown) { //If the left mouse button is down
+		if(Input.GetMouseButton(0)) { //If the left mouse button is down
 			//Set the parameters of the cursor
 			SetParams();
 			
 			//Draw the mouse cursor
 			DrawCursor();
+		} if(Event.current.type == EventType.mouseUp) {
+			Fire();
 		}
 	}
 	
@@ -32,7 +41,9 @@ public class Bow : MonoBehaviour{
 	 * This method launches the rocket upon releasing the mouse button.
 	 **/
 	public void Fire() {
-		//Pass	
+		//Pass
+		GameObject rocket = Instantiate(this.rocket, dir, Quaternion.AngleAxis(theta, Vector3.forward)) as GameObject;
+		rocket.GetComponent<RocketMovement>().setDir(dir);
 	}
 	
 	/**
@@ -41,6 +52,9 @@ public class Bow : MonoBehaviour{
 	 **/
 	public void DrawCursor() {
 		//Working Here
+		Rect cur = new Rect(Input.mousePosition.x - transform.position.x, Screen.height - Input.mousePosition.y, 32, 32);
+		Debug.Log(cur.y);
+		GUI.Label(cur, cursorImage);
 	}
 	
 	/**
@@ -57,7 +71,7 @@ public class Bow : MonoBehaviour{
         this.theta = Mathf.Atan(dir.y/dir.x);
 		
 		//Draw the ray just to be sure we've got the correct vector calculations.
-		Debug.DrawRay(transform.position, dir, Color.blue);	
+		Debug.DrawRay(transform.position, dir, Color.green);	
 	}
     
 	/**

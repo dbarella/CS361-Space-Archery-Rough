@@ -10,7 +10,7 @@ public class RocketMovement : MonoBehaviour {
 	
 	//here are some values made up values that should probably be adjusted for actual gameplay. 
 	//# of seconds the boost lasts
-	private static float boostDuration = 5;
+	private static float boostDuration = 1;
 	//degrees per rotation
 	private static float rotangle = 20;
 	//speed without boost
@@ -27,6 +27,8 @@ public class RocketMovement : MonoBehaviour {
 		boostActive = false;
 		attributes = GetComponent<RocketAttributes>();
 		mag = speed;
+		rigidbody.constraints = RigidbodyConstraints.FreezeRotationZ|RigidbodyConstraints.FreezePositionZ;
+		rigidbody.velocity=dir;
 	}
 	
 	// Update is called once per frame
@@ -40,30 +42,32 @@ public class RocketMovement : MonoBehaviour {
 		//inputs: 
 		//perform rotation, and update direction vector to reflect this
 		if(Input.GetKeyDown(KeyCode.UpArrow) && attributes.getFuel() >= rotateFuel){
-			rotate(rotangle);
-			attributes.useFuel(rotateFuel);
+			rotate (rotangle);
+			rigidbody.AddTorque(Vector3.forward);
+			attributes.useFuel (rotateFuel);
 		}
 		else if(Input.GetKeyDown(KeyCode.DownArrow) && attributes.getFuel() >= rotateFuel){
 			rotate (360-rotangle);
+			rigidbody.AddTorque(Vector3.forward);
 			attributes.useFuel(rotateFuel);
 
 		}
 		//start boost
 		else if(Input.GetKeyDown(KeyCode.Space) && attributes.getFuel() >= boostFuel){
 			boostActive = true;
-			boostStart = Time.time;
-			mag*=boost;
+	 		boostStart = Time.time;
+			mag=boost;
 			attributes.useFuel(boostFuel);
 			
 		}
-		
-		//move rocket
-		transform.position = mag*Time.deltaTime*dir + transform.position;
+		rigidbody.velocity = dir*mag;
 
 	}
 	private void rotate(float angle){
-		transform.RotateAround(transform.position, Vector3.forward, angle);
 		dir = Quaternion.AngleAxis(angle, Vector3.forward)*dir;
 		dir.Normalize();
+	}
+	public void setDir(Vector3 direction){
+		dir = direction;
 	}
 }
