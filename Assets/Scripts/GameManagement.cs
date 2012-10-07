@@ -1,12 +1,13 @@
 using UnityEngine;
+using System.Collections;
 
-public class GameManager: MonoBehaviour{
+public class GameManagement : MonoBehaviour{
 	
 	void Start(){}
 	void Update(){}
 	
 	//Resets the currently loaded level, on request
-	void Reset(){
+	public void ResetLevel(){
 		Application.LoadLevel(Application.loadedLevel);
 	}
 }

@@ -4,6 +4,10 @@
 
 public class Bow : MonoBehaviour{
 	
+	//Development Variables
+	Vector3 offset = new Vector3(0,0,0);
+	float spin = 2.0f;
+	
 	//Direction to the user's cursor
     protected Vector3 dir;
 	
@@ -18,7 +22,6 @@ public class Bow : MonoBehaviour{
 	
     public void Start () {
 		Screen.showCursor = false;
-		//Pass
 	}
     
     public void Update () {
@@ -26,12 +29,12 @@ public class Bow : MonoBehaviour{
     }
 	
 	public void OnGUI() {
+		//Draw the mouse cursor
+		DrawCursor();
+		
 		if(Input.GetMouseButton(0)) { //If the left mouse button is down
 			//Set the parameters of the cursor
 			SetParams();
-			
-			//Draw the mouse cursor
-			DrawCursor();
 		} if(Event.current.type == EventType.mouseUp) {
 			Fire();
 		}
@@ -41,9 +44,13 @@ public class Bow : MonoBehaviour{
 	 * This method launches the rocket upon releasing the mouse button.
 	 **/
 	public void Fire() {
-		//Pass
-		GameObject rocket = Instantiate(this.rocket, dir, Quaternion.AngleAxis(theta, Vector3.forward)) as GameObject;
-		rocket.GetComponent<RocketMovement>().setDir(dir);
+//		Debug.Log(theta);
+//		Debug.Log (Quaternion.AngleAxis(theta, Vector3.forward));
+		GameObject rocket = Instantiate(this.rocket, transform.position + offset, Quaternion.LookRotation(-dir)/*AngleAxis(theta, new Vector3(1, 0, 0))*/) as GameObject;
+		
+		RocketMovement rck = rocket.GetComponent<RocketMovement>();
+		rck.setDir(dir);
+		rck.rigidbody.AddRelativeTorque(Vector3.forward * spin, ForceMode.VelocityChange);
 	}
 	
 	/**
@@ -53,7 +60,7 @@ public class Bow : MonoBehaviour{
 	public void DrawCursor() {
 		//Working Here
 		Rect cur = new Rect(Input.mousePosition.x - transform.position.x, Screen.height - Input.mousePosition.y, 32, 32);
-		Debug.Log(cur.y);
+//		Debug.Log(cur.y);
 		GUI.Label(cur, cursorImage);
 	}
 	
@@ -68,7 +75,7 @@ public class Bow : MonoBehaviour{
 		
 		//Set our parameters
         this.dir = new Vector3(mouseVector.x - transform.position.x, mouseVector.y, 0);
-        this.theta = Mathf.Atan(dir.y/dir.x);
+        this.theta = Mathf.Atan(dir.y/dir.x) * (180.0f / Mathf.PI); //Convert to degrees
 		
 		//Draw the ray just to be sure we've got the correct vector calculations.
 		Debug.DrawRay(transform.position, dir, Color.green);	
