@@ -353,10 +353,11 @@ mark {
 <body>
   <div id="wrapper">
     <div id="content">
-<h1>Space Archery Base Engine - Rev. 02</h1>
+<h1>Space Archery Base Engine - Rev. 02.1</h1>
 
 <table>
 <colgroup>
+<col style="text-align:left;"/>
 <col style="text-align:left;"/>
 <col style="text-align:left;"/>
 <col style="text-align:left;"/>
@@ -365,6 +366,7 @@ mark {
 
 <thead>
 <tr>
+	<th style="text-align:left;">Completed</th>
 	<th style="text-align:left;">Priority</th>
 	<th style="text-align:left;">Object</th>
 	<th style="text-align:left;">Model</th>
@@ -374,43 +376,93 @@ mark {
 
 <tbody>
 <tr>
+	<td style="text-align:left;">Partial</td>
 	<td style="text-align:left;">00</td>
 	<td style="text-align:left;">Setup Git + Github</td>
 	<td style="text-align:left;">None</td>
 	<td style="text-align:left;">None</td>
 </tr>
 <tr>
+	<td style="text-align:left;">No</td>
 	<td style="text-align:left;">01</td>
 	<td style="text-align:left;">Rocket</td>
 	<td style="text-align:left;">RocketModel</td>
 	<td style="text-align:left;">RocketAttributes + RocketMovement.cs</td>
 </tr>
 <tr>
+	<td style="text-align:left;">Partial</td>
 	<td style="text-align:left;">02</td>
 	<td style="text-align:left;">Player</td>
 	<td style="text-align:left;">PlayerModel</td>
 	<td style="text-align:left;">Bow.cs, PlayerMovement.cs</td>
 </tr>
 <tr>
+	<td style="text-align:left;">Yes</td>
 	<td style="text-align:left;">03</td>
 	<td style="text-align:left;">Map</td>
 	<td style="text-align:left;">Skybox</td>
 	<td style="text-align:left;">None</td>
 </tr>
 <tr>
+	<td style="text-align:left;">Yes</td>
 	<td style="text-align:left;">04</td>
 	<td style="text-align:left;">Target</td>
-	<td style="text-align:left;">Unity Primitive</td>
+	<td style="text-align:left;">Cube</td>
 	<td style="text-align:left;">None; assign collider and &#8220;Target&#8221; tag</td>
 </tr>
 <tr>
+	<td style="text-align:left;">No</td>
+	<td style="text-align:left;">05</td>
+	<td style="text-align:left;">Planet</td>
+	<td style="text-align:left;">Sphere</td>
+	<td style="text-align:left;">GravityBehavior.cs</td>
+</tr>
+<tr>
+	<td style="text-align:left;">No</td>
+	<td style="text-align:left;">06</td>
+	<td style="text-align:left;">Wormhole</td>
+	<td style="text-align:left;">Unity Primitive</td>
+	<td style="text-align:left;">WormholeBehavior.cs</td>
+</tr>
+<tr>
+	<td style="text-align:left;">No</td>
+	<td style="text-align:left;">07</td>
+	<td style="text-align:left;">Enemy Missile</td>
+	<td style="text-align:left;">RocketModel w/ different texture</td>
+	<td style="text-align:left;">EnemyMissileBehavior.cs</td>
+</tr>
+<tr>
+	<td style="text-align:left;">No</td>
+	<td style="text-align:left;">08</td>
+	<td style="text-align:left;">HUD</td>
+	<td style="text-align:left;">None</td>
+	<td style="text-align:left;">HUD.cs</td>
+</tr>
+<tr>
+	<td style="text-align:left;">No</td>
+	<td style="text-align:left;">09</td>
+	<td style="text-align:left;">Main Menu</td>
+	<td style="text-align:left;">None</td>
+	<td style="text-align:left;">MainMenu.cs</td>
+</tr>
+<tr>
+	<td style="text-align:left;">No</td>
+	<td style="text-align:left;">10</td>
+	<td style="text-align:left;">Three Base Levels</td>
+	<td style="text-align:left;">Unity Scene</td>
+	<td style="text-align:left;">None</td>
+</tr>
+<tr>
+	<td style="text-align:left;">No</td>
 	<td style="text-align:left;"><em>Bonus</em></td>
+	<td style="text-align:left;">Combo Levels</td>
+	<td style="text-align:left;">Unity Scene</td>
 	<td style="text-align:left;">None</td>
-	<td style="text-align:left;">None</td>
-	<td style="text-align:left;">GravityField.cs</td>
 </tr>
 </tbody>
 </table>
+<h4>Updates and Additional Scripts will be posted on 8 Oct. by 8 pm</h4>
+
 <h4>Script Details</h4>
 
 <p>All classes need getters and possibly setters for the variables specified here. They should all handle variable mutation in methods that other classes can call. There should be no mutation being done by an outside class - everything needs to pass through the script in which the variables reside.</p>

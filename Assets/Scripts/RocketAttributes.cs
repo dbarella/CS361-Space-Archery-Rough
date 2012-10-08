@@ -4,6 +4,8 @@ using System.Collections;
 public class RocketAttributes : MonoBehaviour {
 	public float fuel;
 	public float health;
+	public float spin = 2.0f;
+	
 	// Use this for initialization
 	void Start () {
 		//Pass

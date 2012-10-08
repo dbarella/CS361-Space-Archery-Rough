@@ -1,0 +1,21 @@
+#Ignore OSX metadata
+*.DS_Store
+
+#Ignore Unity metadata
+*.pidb
+*.csproj
+*.sln
+*.userprefs
+*.unityproj
+
+#Ignore Unity-Compiled folders
+Library
+ProjectSettings
+Temp
+
+#Ignore non-code folders (Available via dropbox)
+Assets/Materials/
+Assets/Models/
+Assets/Prefabs/
+Assets/Scenes/
+Assets/Textures/

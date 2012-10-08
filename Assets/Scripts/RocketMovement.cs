@@ -2,6 +2,10 @@ using UnityEngine;
 using System.Collections;
 
 public class RocketMovement : MonoBehaviour {
+	
+	//Dan's additions
+	private float spin;
+	
 	private bool boostActive;
 	Vector3 dir = new Vector3(1,0,0);
 	private float boostStart;
@@ -26,6 +30,7 @@ public class RocketMovement : MonoBehaviour {
 	void Start () {
 		boostActive = false;
 		attributes = GetComponent<RocketAttributes>();
+		this.spin = attributes.spin;
 		mag = speed;
 		rigidbody.constraints = RigidbodyConstraints.FreezeRotationZ|RigidbodyConstraints.FreezePositionZ;
 		rigidbody.velocity=dir;
@@ -56,18 +61,31 @@ public class RocketMovement : MonoBehaviour {
 		else if(Input.GetKeyDown(KeyCode.Space) && attributes.getFuel() >= boostFuel){
 			boostActive = true;
 	 		boostStart = Time.time;
-			mag=boost;
+			mag*=boost;
 			attributes.useFuel(boostFuel);
 			
 		}
 		rigidbody.velocity = dir*mag;
-
+		
+		//Dan's Additions
+		//rotateModel();
 	}
+	
 	private void rotate(float angle){
 		dir = Quaternion.AngleAxis(angle, Vector3.forward)*dir;
 		dir.Normalize();
 	}
+	
 	public void setDir(Vector3 direction){
 		dir = direction;
+	}
+	
+	//Dan's Additions
+	/**
+	 * Rotates the rocket model about its axis for visual flair
+	 **/
+	private void rotateModel() {
+		Transform rckModel = transform.FindChild("RocketModel");
+		rckModel.transform.RotateAroundLocal(Vector3.forward, spin*Time.deltaTime);
 	}
 }

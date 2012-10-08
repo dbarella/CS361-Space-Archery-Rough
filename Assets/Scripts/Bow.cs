@@ -6,7 +6,6 @@ public class Bow : MonoBehaviour{
 	
 	//Development Variables
 	Vector3 offset = new Vector3(0,0,0);
-	float spin = 2.0f;
 	
 	//Direction to the user's cursor
     protected Vector3 dir;
@@ -48,9 +47,13 @@ public class Bow : MonoBehaviour{
 //		Debug.Log (Quaternion.AngleAxis(theta, Vector3.forward));
 		GameObject rocket = Instantiate(this.rocket, transform.position + offset, Quaternion.LookRotation(-dir)/*AngleAxis(theta, new Vector3(1, 0, 0))*/) as GameObject;
 		
+		//Set the rocket's direction
 		RocketMovement rck = rocket.GetComponent<RocketMovement>();
 		rck.setDir(dir);
-		rck.rigidbody.AddRelativeTorque(Vector3.forward * spin, ForceMode.VelocityChange);
+		
+		//Rotate the model along its axis just for fun
+		//Transform rckModel = rocket.transform.FindChild("RocketModel");
+		//rigidbody.AddRelativeTorque(Vector3.forward * spin, ForceMode.VelocityChange);
 	}
 	
 	/**
@@ -74,7 +77,7 @@ public class Bow : MonoBehaviour{
 		Vector3 mouseVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		
 		//Set our parameters
-        this.dir = new Vector3(mouseVector.x - transform.position.x, mouseVector.y, 0);
+        this.dir = new Vector3(mouseVector.x - transform.position.x, mouseVector.y - transform.position.y, 0);
         this.theta = Mathf.Atan(dir.y/dir.x) * (180.0f / Mathf.PI); //Convert to degrees
 		
 		//Draw the ray just to be sure we've got the correct vector calculations.
