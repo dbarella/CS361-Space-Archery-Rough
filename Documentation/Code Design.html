@@ -353,7 +353,7 @@ mark {
 <body>
   <div id="wrapper">
     <div id="content">
-<h1>Space Archery Base Engine - Rev. 02.1</h1>
+<h1>Space Archery Base Engine - Rev. 03</h1>
 
 <table>
 <colgroup>
@@ -377,77 +377,77 @@ mark {
 <tbody>
 <tr>
 	<td style="text-align:left;">Partial</td>
-	<td style="text-align:left;">00</td>
+	<td style="text-align:left;">Critical</td>
 	<td style="text-align:left;">Setup Git + Github</td>
 	<td style="text-align:left;">None</td>
 	<td style="text-align:left;">None</td>
 </tr>
 <tr>
 	<td style="text-align:left;">No</td>
-	<td style="text-align:left;">01</td>
+	<td style="text-align:left;">Integral</td>
 	<td style="text-align:left;">Rocket</td>
 	<td style="text-align:left;">RocketModel</td>
-	<td style="text-align:left;">RocketAttributes + RocketMovement.cs</td>
+	<td style="text-align:left;">RocketAttributes.cs + RocketMovement.cs</td>
 </tr>
 <tr>
 	<td style="text-align:left;">Partial</td>
-	<td style="text-align:left;">02</td>
+	<td style="text-align:left;">Integral</td>
 	<td style="text-align:left;">Player</td>
 	<td style="text-align:left;">PlayerModel</td>
 	<td style="text-align:left;">Bow.cs, PlayerMovement.cs</td>
 </tr>
 <tr>
 	<td style="text-align:left;">Yes</td>
-	<td style="text-align:left;">03</td>
+	<td style="text-align:left;">Integral</td>
 	<td style="text-align:left;">Map</td>
 	<td style="text-align:left;">Skybox</td>
 	<td style="text-align:left;">None</td>
 </tr>
 <tr>
 	<td style="text-align:left;">Yes</td>
-	<td style="text-align:left;">04</td>
+	<td style="text-align:left;">Integral</td>
 	<td style="text-align:left;">Target</td>
 	<td style="text-align:left;">Cube</td>
 	<td style="text-align:left;">None; assign collider and &#8220;Target&#8221; tag</td>
 </tr>
 <tr>
 	<td style="text-align:left;">No</td>
-	<td style="text-align:left;">05</td>
+	<td style="text-align:left;">Integral</td>
 	<td style="text-align:left;">Planet</td>
 	<td style="text-align:left;">Sphere</td>
 	<td style="text-align:left;">GravityBehavior.cs</td>
 </tr>
 <tr>
 	<td style="text-align:left;">No</td>
-	<td style="text-align:left;">06</td>
+	<td style="text-align:left;">Integral</td>
 	<td style="text-align:left;">Wormhole</td>
 	<td style="text-align:left;">Unity Primitive</td>
 	<td style="text-align:left;">WormholeBehavior.cs</td>
 </tr>
 <tr>
 	<td style="text-align:left;">No</td>
-	<td style="text-align:left;">07</td>
+	<td style="text-align:left;">Integral</td>
 	<td style="text-align:left;">Enemy Missile</td>
 	<td style="text-align:left;">RocketModel w/ different texture</td>
-	<td style="text-align:left;">EnemyMissileBehavior.cs</td>
+	<td style="text-align:left;">EnemyMissileBehavior.cs + EnemyMissileSpawner.cs</td>
 </tr>
 <tr>
 	<td style="text-align:left;">No</td>
-	<td style="text-align:left;">08</td>
+	<td style="text-align:left;">Integral</td>
 	<td style="text-align:left;">HUD</td>
 	<td style="text-align:left;">None</td>
 	<td style="text-align:left;">HUD.cs</td>
 </tr>
 <tr>
 	<td style="text-align:left;">No</td>
-	<td style="text-align:left;">09</td>
+	<td style="text-align:left;">Non-Integral, Recommended</td>
 	<td style="text-align:left;">Main Menu</td>
-	<td style="text-align:left;">None</td>
+	<td style="text-align:left;">Unity Scene</td>
 	<td style="text-align:left;">MainMenu.cs</td>
 </tr>
 <tr>
 	<td style="text-align:left;">No</td>
-	<td style="text-align:left;">10</td>
+	<td style="text-align:left;">Integral</td>
 	<td style="text-align:left;">Three Base Levels</td>
 	<td style="text-align:left;">Unity Scene</td>
 	<td style="text-align:left;">None</td>
@@ -467,7 +467,7 @@ mark {
 
 <p>All classes need getters and possibly setters for the variables specified here. They should all handle variable mutation in methods that other classes can call. There should be no mutation being done by an outside class - everything needs to pass through the script in which the variables reside.</p>
 
-<ol>
+<ul>
 <li>RocketAttributes.cs
 
 <ul>
@@ -519,7 +519,42 @@ mark {
 <li>Up/Down moves the player up and down between certain bounds</li>
 </ol></li>
 </ul></li>
-</ol>
+<li>GravityBehavior.cs
+
+<ul>
+<li>This script dictates the behavior of a gravitational body in the game world. As its basis, it will attract objects within a certain radius toward its center and destroy them upon contacting its surface. The second iteration will support drawing green/yellow/red zones radially around the gravitational body to indicate the strength of the gravitational pull at certain distances from the planet.</li>
+</ul></li>
+<li>WormholeBehavior.cs
+
+<ul>
+<li>This script will be attached to the entrance of a wormhole object and will have a GameObject field to reference the exit object. Upon colliding with the wormhole entrance, the player will be teleported to the transform.position of the exit plus some offset (for our purposes, the wormhole objects will be spheres - use the radius for this offset).</li>
+</ul></li>
+<li>EnemyMissileBehavior.cs
+
+<ul>
+<li>For this iteration, this script will do two things: it will move the EnemyMissile forward along its axis, and it will destroy the player&#8217;s rocket upon colliding with it.</li>
+<li>Create the EnemyMissile prefab as described in the Milestone doc.</li>
+<li>Create a method UnguidedMovement() that moves the rocket forward a certain amount. Place a call to this method in the FixedUpdate() method.</li>
+<li>In the OnColliderEnter(GameObject obj) method, have this script check whether or not obj is the player&#8217;s rocket (check if obj&#8217;s tag is &#8220;Rocket&#8221;). If it is, send a message to RocketAttributes.TakeDamage(), and pass in your damage float.</li>
+</ul></li>
+<li>EnemyMissileSpawner.cs
+
+<ul>
+<li>This script will go on an empty GO, which will then become an EnemyMissileSpawner. The script will need to instantiate EnemyMissiles in the direction of the spawner&#8217;s local x coordinate at random intervals. Have two class fields that vary the times which can be randomly picked (Mathf.Random.Range(float min, float max)). Remember to count down to zero using Time.deltaTime, not up to infinity.</li>
+<li>Create a method SpawnEnemyMissile() that Instantiates an EnemyMissile in the direction of the spawner&#8217;s local x coordinate.</li>
+<li>In Update(), implement the randomized timer described above. When the timer reaches zero, call SpawnEnemyMissile(), then reset the timer to a new random amount.</li>
+</ul></li>
+<li>HUD.cs
+
+<ul>
+<li>This script will display certain fields of RocketAttributes.cs to the player via GUI textboxes. See <a href="http://www.youtube.com/watch?v=YYqzz1dy3Ak">here</a> for a good, simple approach to drawing a health bar. For this iteration we will need two bars, one to display fuel and one to display health.</li>
+</ul></li>
+<li>MainMenu.cs
+
+<ul>
+<li>This script will be attached to a Unity Scene that contains the the game title, credits, and buttons for each level that we have. See <a href="http://cgcookie.com/unity/2012/03/30/lunar-lander-05-gui-menus/">here</a> and <a href="http://purdyjotut.blogspot.com/2011/02/creating-game-in-unity-part-1-main-menu.html">here</a> for some good guides on setting up menus using Unity&#8217;s built-in elements. Consider implementing the pause menu from the UnityCookie tutorial if you feel you&#8217;ve got the time and the understanding.</li>
+</ul></li>
+</ul>
 
 <h4>Object Details</h4>
 
@@ -533,9 +568,9 @@ mark {
 </ul></li>
 </ul>
 
-<p>If we need anything more complex than this arrangement for this week, I&#8217;ll contact everyone and update the doc accordingly. Object scripts will control aspects of the ObjectModel in future iterations, but for the time being the ObjectModels are purely for display. </p>
+<h4>Comms</h4>
 
-<p>Our objects are fairly independant in this build. The target will communicate to the (as-of-yet-unspecified) game manager when it&#8217;s been hit, and the rocket will do the same if it runs off the board and is destroyed. The game manager will then reset the game. Bow specifically instantiates the rocket upon releasing the mouse button, and passes in the launch velocity. Otherwise, everything keeps to itself.</p>
+<p>The target will communicate to the game manager when it&#8217;s been hit, and the rocket will do the same if it runs off the board and is destroyed. The game manager will then reset the game. Bow specifically instantiates the rocket upon releasing the mouse button, and passes in the launch velocity. Enemy rockets will damage the Rocket, and the Rocket will destroy itself in the case that it has no health, informing the game manager to reset the game.</p>
     </div>
   </div> <!-- End wrapper -->
 </body>
