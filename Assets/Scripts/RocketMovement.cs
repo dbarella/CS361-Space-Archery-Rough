@@ -103,12 +103,12 @@ public class RocketMovement : MonoBehaviour {
 		
 		//Apply thrust
 		if(attributes.getFuel() > 0) {
-			if(rigidbody.velocity.sqrMagnitude <= sqrStdTopSpeed) { //If we're lower than the top speed
-				
+			if(!boostActive && rigidbody.velocity.sqrMagnitude <= sqrStdTopSpeed) { //If we're lower than the top speed
 				rigidbody.AddRelativeForce(standardForce * Vector3.right * Time.fixedDeltaTime); //Apply thrust
-			} if(boostActive && rigidbody.velocity.sqrMagnitude <= 2*sqrStdTopSpeed) { //If we're boosting
+			} else if(boostActive && rigidbody.velocity.sqrMagnitude <= 2*sqrStdTopSpeed) { //If we're boosting
 				rigidbody.AddRelativeForce(boostMultiplier * standardForce * Vector3.right * Time.fixedDeltaTime); //Apply thrust
 			}
+			Debug.Log(rigidbody.velocity);
 			//Spend fuel
 			attributes.useFuel(stdFuel*Time.fixedDeltaTime);
 		}	
