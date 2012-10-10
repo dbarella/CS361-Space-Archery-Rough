@@ -25,10 +25,14 @@ public class Bow : MonoBehaviour{
 	//Cursor texture
 	public Texture2D cursorImage;
 	
+	//rocketFired - true if the rocket has been fired, false otherwise
+	private bool rocketFired;
+	
     public void Start () {
 		Screen.showCursor = false;
 		player = GameObject.FindWithTag("Player");
 		stdTopSpeed = RocketMovement.stdTopSpeed;
+		rocketFired = false;
 	}
     
     public void Update () {
@@ -42,7 +46,7 @@ public class Bow : MonoBehaviour{
 		if(Input.GetMouseButton(0)) { //If the left mouse button is down
 			//Set the parameters of the cursor
 			SetParams();
-		} if(Event.current.type == EventType.mouseUp) {
+		} if(Event.current.type == EventType.mouseUp && !rocketFired) {
 			Fire();
 		}
 	}
@@ -52,7 +56,7 @@ public class Bow : MonoBehaviour{
 	 **/
 	public void Fire() {
 		GameObject rocket = Instantiate(this.rocket, transform.position + offset, Quaternion.LookRotation(dir, Vector3.forward)/*AngleAxis(theta, new Vector3(1, 0, 0))*/) as GameObject;
-		rocket.transform.Rotate(new Vector3(-90,90,180/*90, 90, 180*/)); //Fix the rocket's rotation
+		rocket.transform.Rotate(new Vector3(-90,90,180)); //Fix the rocket's rotation
 		
 		//Set the rocket's direction
 		RocketMovement rck = rocket.GetComponent<RocketMovement>();
@@ -68,10 +72,11 @@ public class Bow : MonoBehaviour{
 			
 		//Disable player movement
 		player.GetComponent<PlayerMovement>().DisableMovement();
+		rocketFired = true;
 	}
 	
 	/**
-	 * Draws a sphere primitive under the mouse pointer so the user has an indication
+	 * Draws a mousepointer under the mouse pointer so the user has an indication
 	 * of where they're aiming and the aiming boundaries.
 	 **/
 	public void DrawCursor() {

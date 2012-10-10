@@ -10,15 +10,18 @@ public class PlayerMovement : MonoBehaviour {
 	//Movement Boundaries
 	private float max_y;
 	private float min_y;
-	float buffer = -2;
+	private float yBuffer = -2;
+	private float xBuffer = 30;
 	
 	// Use this for initialization
 	void Start () {
 		canMove = true;
 		
 		//Define movement boundaries
-		max_y = Camera.main.orthographicSize + buffer;
+		max_y = Camera.main.orthographicSize + yBuffer;
 		min_y = - max_y;
+		
+		transform.position = Camera.main.ScreenToWorldPoint(new Vector3(xBuffer, Camera.main.pixelHeight/2, -Camera.main.transform.position.z));
 	}
 	
 	// Update is called once per frame

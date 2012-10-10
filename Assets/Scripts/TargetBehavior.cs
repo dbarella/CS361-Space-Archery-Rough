@@ -8,11 +8,13 @@ public class TargetBehavior : MonoBehaviour {
 	
 	//Dev Variable
 	private float spin = 1.0f;
+	public float xBuffer = 30;
 	
 	// Use this for initialization
 	void Start () {
 		mgmt = Camera.main.GetComponent<GameManagement>();
 		rigidbody.AddRelativeTorque(Vector3.forward * spin, ForceMode.VelocityChange);
+		transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth - xBuffer, Camera.main.pixelHeight/2, -Camera.main.transform.position.z));
 	}
 	
 	// Update is called once per frame

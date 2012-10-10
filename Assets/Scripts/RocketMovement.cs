@@ -30,7 +30,7 @@ public class RocketMovement : MonoBehaviour {
 	private float standardForce = 1000.0f;
 	
 	//Boost force mutliplier
-	private float boostMultiplier = 1.5f;
+	private float boostMultiplier = 2.5f;
 	//Rotation torque force
 	private float rotationTorque = 100.0f;
 	
@@ -72,7 +72,7 @@ public class RocketMovement : MonoBehaviour {
 	}
 	
 	public void MoveRocket() {
-		//transform.Translate(new Vector3(1,0,0) * Time.fixedDeltaTime);
+		transform.Translate(new Vector3(1,0,0) * Time.fixedDeltaTime);
 		
 		//End boost if timed out
 //		if(boostActive && boostTimer <= 0) {
@@ -108,7 +108,6 @@ public class RocketMovement : MonoBehaviour {
 			} else if(boostActive && rigidbody.velocity.sqrMagnitude <= 2*sqrStdTopSpeed) { //If we're boosting
 				rigidbody.AddRelativeForce(boostMultiplier * standardForce * Vector3.right * Time.fixedDeltaTime); //Apply thrust
 			}
-			Debug.Log(rigidbody.velocity);
 			//Spend fuel
 			attributes.useFuel(stdFuel*Time.fixedDeltaTime);
 		}	
