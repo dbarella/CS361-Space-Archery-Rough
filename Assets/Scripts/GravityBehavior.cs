@@ -6,14 +6,20 @@ public class GravityBehavior : MonoBehaviour {
 	public float gravForce = 20;
 	public float orbitVelocity = 10;
 	
+	//Random axis of rotation
+	private Vector3 rotationAxis;
+	//Random spin speed
+	private float spinSpeed;
+	
 	// Use this for initialization
 	void Start () {
-	
+		rotationAxis = new Vector3(Random.Range(-90.0f, 90.0f), Random.Range(-90.0f, 90.0f), Random.Range(-90.0f, 90.0f));
+		spinSpeed = Random.Range(0.0f, 0.6f);
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		transform.RotateAroundLocal(new Vector3(0, .9f, -.3f), .5f * Time.fixedDeltaTime);
+		transform.RotateAroundLocal((rotationAxis), spinSpeed * Time.fixedDeltaTime);
 	}
 	
 	void OnTriggerStay(Collider col) {
