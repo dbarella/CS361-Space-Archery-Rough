@@ -5,78 +5,121 @@ public class RocketMovement : MonoBehaviour {
 	
 	//Dan's additions
 	private float spin;
+	Transform rocketModel;
 	
-	private bool boostActive;
-	Vector3 dir = new Vector3(1,0,0);
-	private float boostStart;
+	//Reference to RocketAttributes.cs
 	RocketAttributes attributes;
-	private float mag;
 	
-	//here are some values made up values that should probably be adjusted for actual gameplay. 
+	//The rocket's direction vector. Defaults to a (1,0,0) vector.
+	Vector3 dir = new Vector3(1,0,0);
+	
+	//true if the boost is on, false otherwise
+	private bool boostActive;
+	
 	//# of seconds the boost lasts
-	private static float boostDuration = 1;
-	//degrees per rotation
-	private static float rotangle = 20;
-	//speed without boost
-	private static float speed = 1;
-	//boost mutliplier
-	private static float boost = 2;
-	//fuel use: rotate
-	private static float rotateFuel = 1;
-	//fuel use: boost
-	private static float boostFuel = 2;
+//	private float boostDuration = 1;
+	//Timer for the rocket's boost
+	//private float boostTimer = 0f;
 	
-	// Use this for initialization
+	//Standard top speed
+	public static float stdTopSpeed = 20.0f;
+	//Square of the top speed for cheaper iterations
+	private static float sqrStdTopSpeed;
+	
+	//Rocket thrust without boost
+	private float standardForce = 1000.0f;
+	
+	//Boost force mutliplier
+	private float boostMultiplier = 1.5f;
+	//Rotation torque force
+	private float rotationTorque = 100.0f;
+	
+	//Fuel used by rotating
+	private float rotateFuel = 4;
+	//Fuel used by boosting
+	private float boostFuel = 8;
+	//Fuel used by normal travel
+	private float stdFuel = 2;
+
+	//degrees per rotation
+	//DEPRECATED - We want discrete movement. private static float rotangle = 20;
+	
 	void Start () {
-		boostActive = false;
+		//Source the RocketAttributes.cs class
 		attributes = GetComponent<RocketAttributes>();
+		
+		//Dan's additions
 		this.spin = attributes.spin;
-		mag = speed;
-		rigidbody.constraints = RigidbodyConstraints.FreezeRotationZ|RigidbodyConstraints.FreezePositionZ;
-		rigidbody.velocity=dir;
+		rocketModel = transform.FindChild("RocketModel");
+		
+		boostActive = false;
+		sqrStdTopSpeed = stdTopSpeed * stdTopSpeed;
+		
+		//Restrict movement and rotation
+		rigidbody.constraints = RigidbodyConstraints.FreezeRotationX|RigidbodyConstraints.FreezeRotationY|RigidbodyConstraints.FreezePositionZ;
+
+//		rigidbody.velocity=dir;
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		//end boost once boostDuration has passed
-		if(boostActive && Time.time - boostStart >= boostDuration){
-			boostActive = false;
-			mag /= boost;
-		}
-		
-		//inputs: 
-		//perform rotation, and update direction vector to reflect this
-		if(Input.GetKeyDown(KeyCode.UpArrow) && attributes.getFuel() >= rotateFuel){
-			rotate (rotangle);
-			rigidbody.AddTorque(Vector3.forward);
-			attributes.useFuel (rotateFuel);
-		}
-		else if(Input.GetKeyDown(KeyCode.DownArrow) && attributes.getFuel() >= rotateFuel){
-			rotate (360-rotangle);
-			rigidbody.AddTorque(Vector3.forward);
-			attributes.useFuel(rotateFuel);
-
-		}
-		//start boost
-		else if(Input.GetKeyDown(KeyCode.Space) && attributes.getFuel() >= boostFuel){
-			boostActive = true;
-	 		boostStart = Time.time;
-			mag*=boost;
-			attributes.useFuel(boostFuel);
-			
-		}
-		rigidbody.velocity = dir*mag;
+	}
+	
+	void FixedUpdate() {
+		MoveRocket();
 		
 		//Dan's Additions
-		//rotateModel();
+		RotateModel();
 	}
 	
-	private void rotate(float angle){
+	public void MoveRocket() {
+		//transform.Translate(new Vector3(1,0,0) * Time.fixedDeltaTime);
+		
+		//End boost if timed out
+//		if(boostActive && boostTimer <= 0) {
+//			boostActive = false;
+//		}
+		
+		//Get steering input
+		if(Input.GetKey(KeyCode.UpArrow) && attributes.getFuel() > 0){
+			//rigidbody.AddRelativeTorque(rotationTorque * Vector3.forward * Time.fixedDeltaTime);
+//			rigidbody.AddRelativeForce(rotationTorque * Vector3.up * Time.fixedDeltaTime);
+			transform.Rotate(rotationTorque * Vector3.forward * Time.fixedDeltaTime);
+			attributes.useFuel(rotateFuel*Time.fixedDeltaTime);
+		}
+		else if(Input.GetKey(KeyCode.DownArrow) && attributes.getFuel() > 0){
+			//rigidbody.AddRelativeTorque(rotationTorque * -Vector3.forward * Time.fixedDeltaTime);
+//			rigidbody.AddRelativeForce(rotationTorque * -Vector3.up * Time.fixedDeltaTime);
+			transform.Rotate(rotationTorque * -Vector3.forward * Time.fixedDeltaTime);
+			attributes.useFuel(rotateFuel*Time.fixedDeltaTime);
+		}
+		
+		//Toggle boost
+		if(Input.GetKey(KeyCode.Space) && attributes.getFuel() > 0){
+			boostActive = true;
+			attributes.useFuel(boostFuel * Time.fixedDeltaTime);
+		} else {
+			boostActive = false;
+		}
+		
+		//Apply thrust
+		if(attributes.getFuel() > 0) {
+			if(rigidbody.velocity.sqrMagnitude <= sqrStdTopSpeed) { //If we're lower than the top speed
+				
+				rigidbody.AddRelativeForce(standardForce * Vector3.right * Time.fixedDeltaTime); //Apply thrust
+			} if(boostActive && rigidbody.velocity.sqrMagnitude <= 2*sqrStdTopSpeed) { //If we're boosting
+				rigidbody.AddRelativeForce(boostMultiplier * standardForce * Vector3.right * Time.fixedDeltaTime); //Apply thrust
+			}
+			//Spend fuel
+			attributes.useFuel(stdFuel*Time.fixedDeltaTime);
+		}	
+	}
+	
+	private void Rotate(float angle){
 		dir = Quaternion.AngleAxis(angle, Vector3.forward)*dir;
 		dir.Normalize();
 	}
 	
-	public void setDir(Vector3 direction){
+	public void SetDir(Vector3 direction){
 		dir = direction;
 	}
 	
@@ -84,8 +127,7 @@ public class RocketMovement : MonoBehaviour {
 	/**
 	 * Rotates the rocket model about its axis for visual flair
 	 **/
-	private void rotateModel() {
-		Transform rckModel = transform.FindChild("RocketModel");
-		rckModel.transform.RotateAroundLocal(Vector3.forward, spin*Time.deltaTime);
+	private void RotateModel() {
+		rocketModel.RotateAroundLocal(Vector3.right, spin*Time.fixedDeltaTime);
 	}
 }

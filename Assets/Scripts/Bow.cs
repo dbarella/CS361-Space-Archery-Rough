@@ -4,8 +4,14 @@
 
 public class Bow : MonoBehaviour{
 	
+	//Rocket GO
+	public GameObject rocket;
+	
+	//Player GO
+	public GameObject player;
+	
 	//Development Variables
-	Vector3 offset = new Vector3(0,0,0);
+	Vector3 offset = new Vector3(1,0,0);
 	
 	//Direction to the user's cursor
     protected Vector3 dir;
@@ -13,14 +19,16 @@ public class Bow : MonoBehaviour{
 	//Angle between the x-axis and the user's cursor
     protected float theta;
 	
+	//Maximum allowed top speed
+	public float stdTopSpeed;
+	
 	//Cursor texture
 	public Texture2D cursorImage;
 	
-	//Rocket GO
-	public GameObject rocket;
-	
     public void Start () {
 		Screen.showCursor = false;
+		player = GameObject.FindWithTag("Player");
+		stdTopSpeed = RocketMovement.stdTopSpeed;
 	}
     
     public void Update () {
@@ -43,17 +51,23 @@ public class Bow : MonoBehaviour{
 	 * This method launches the rocket upon releasing the mouse button.
 	 **/
 	public void Fire() {
-//		Debug.Log(theta);
-//		Debug.Log (Quaternion.AngleAxis(theta, Vector3.forward));
-		GameObject rocket = Instantiate(this.rocket, transform.position + offset, Quaternion.LookRotation(-dir)/*AngleAxis(theta, new Vector3(1, 0, 0))*/) as GameObject;
+		GameObject rocket = Instantiate(this.rocket, transform.position + offset, Quaternion.LookRotation(dir, Vector3.forward)/*AngleAxis(theta, new Vector3(1, 0, 0))*/) as GameObject;
+		rocket.transform.Rotate(new Vector3(-90,90,180/*90, 90, 180*/)); //Fix the rocket's rotation
 		
 		//Set the rocket's direction
 		RocketMovement rck = rocket.GetComponent<RocketMovement>();
-		rck.setDir(dir);
+		rck.SetDir(dir); //Set the rocket's direction vector
 		
-		//Rotate the model along its axis just for fun
-		//Transform rckModel = rocket.transform.FindChild("RocketModel");
-		//rigidbody.AddRelativeTorque(Vector3.forward * spin, ForceMode.VelocityChange);
+		//Set the rocket's initial velocity
+		float dirMag = dir.magnitude;
+		if(dirMag > stdTopSpeed) { //If the magnitude that the use wants is too great, set it to the top speed
+			rck.rigidbody.velocity = stdTopSpeed*dir.normalized;
+		} else { //Otherwise, se the velocity to dir
+			rck.rigidbody.velocity = dir;
+		}
+			
+		//Disable player movement
+		player.GetComponent<PlayerMovement>().DisableMovement();
 	}
 	
 	/**
