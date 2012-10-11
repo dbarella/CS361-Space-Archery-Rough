@@ -14,7 +14,7 @@ public class GravityBehavior : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rotationAxis = new Vector3(Random.Range(-90.0f, 90.0f), Random.Range(-90.0f, 90.0f), Random.Range(-90.0f, 90.0f));
-		spinSpeed = Random.Range(0.0f, 0.6f);
+		spinSpeed = Random.Range(-1.0f, 1.0f);
 	}
 	
 	// Update is called once per frame

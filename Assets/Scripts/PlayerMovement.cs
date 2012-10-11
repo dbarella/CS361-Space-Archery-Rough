@@ -5,7 +5,7 @@ public class PlayerMovement : MonoBehaviour {
 	
 	//True if the player is allowed to move, false otherwise
 	bool canMove;
-	float speed = 5.0f;
+	float speed = 10.0f;
 	
 	//Movement Boundaries
 	private float max_y;

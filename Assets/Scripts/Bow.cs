@@ -81,7 +81,7 @@ public class Bow : MonoBehaviour{
 	 **/
 	public void DrawCursor() {
 		//Working Here
-		Rect cur = new Rect(Input.mousePosition.x - transform.position.x, Screen.height - Input.mousePosition.y, 32, 32);
+		Rect cur = new Rect(Input.mousePosition.x, Screen.height - Input.mousePosition.y, 32, 32);
 //		Debug.Log(cur.y);
 		GUI.Label(cur, cursorImage);
 	}

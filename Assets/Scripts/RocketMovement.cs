@@ -27,12 +27,14 @@ public class RocketMovement : MonoBehaviour {
 	private static float sqrStdTopSpeed;
 	
 	//Rocket thrust without boost
-	private float standardForce = 1000.0f;
+	public float standardForce = 500.0f;
 	
+	//Boost top speed multiplier
+	public float boostSpeedMultiplier = 1.2f;
 	//Boost force mutliplier
-	private float boostMultiplier = 2.5f;
+	public float boostMultiplier = 1.75f;
 	//Rotation torque force
-	private float rotationTorque = 100.0f;
+	public float rotationTorque = 100.0f;
 	
 	//Fuel used by rotating
 	private float rotateFuel = 4;
@@ -102,11 +104,17 @@ public class RocketMovement : MonoBehaviour {
 		}
 		
 		//Apply thrust
-		if(attributes.getFuel() > 0) {
-			if(!boostActive && rigidbody.velocity.sqrMagnitude <= sqrStdTopSpeed) { //If we're lower than the top speed
-				rigidbody.AddRelativeForce(standardForce * Vector3.right * Time.fixedDeltaTime); //Apply thrust
-			} else if(boostActive && rigidbody.velocity.sqrMagnitude <= 2*sqrStdTopSpeed) { //If we're boosting
-				rigidbody.AddRelativeForce(boostMultiplier * standardForce * Vector3.right * Time.fixedDeltaTime); //Apply thrust
+		if(attributes.getFuel() > 0) { //If we have fuel
+//			if(!boostActive && rigidbody.velocity.sqrMagnitude <= sqrStdTopSpeed) { //If we're lower than the top speed
+//				rigidbody.AddRelativeForce(standardForce * Vector3.right * Time.fixedDeltaTime); //Apply thrust
+//			} else if(boostActive && rigidbody.velocity.sqrMagnitude <= 2*sqrStdTopSpeed) { //If we're boosting
+//				rigidbody.AddRelativeForce(boostMultiplier * standardForce * Vector3.right * Time.fixedDeltaTime); //Apply thrust
+//			}
+			float forwardSpeed = Vector3.Dot(rigidbody.velocity, transform.forward); //Find our forward speed
+			if(!boostActive && forwardSpeed <= stdTopSpeed) {
+				rigidbody.AddRelativeForce(standardForce * Vector3.right * Time.fixedDeltaTime);
+			} else if(boostActive && forwardSpeed <= boostSpeedMultiplier * stdTopSpeed) {
+				rigidbody.AddRelativeForce(boostMultiplier * standardForce * Vector3.right * Time.fixedDeltaTime);
 			}
 			//Spend fuel
 			attributes.useFuel(stdFuel*Time.fixedDeltaTime);
