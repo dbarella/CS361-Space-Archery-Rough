@@ -13,7 +13,7 @@ Library
 ProjectSettings
 Temp
 
-#Ignore non-code folders (Available via dropbox)
+#Ignore non-code folders (Available via SugarSync)
 Assets/Materials/
 Assets/Models/
 Assets/Prefabs/
