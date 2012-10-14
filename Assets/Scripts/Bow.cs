@@ -28,11 +28,15 @@ public class Bow : MonoBehaviour{
 	//rocketFired - true if the rocket has been fired, false otherwise
 	private bool rocketFired;
 	
+	//position where mouse is first clicked
+	private Vector3 mouseStart;
+	
     public void Start () {
 		Screen.showCursor = false;
 		player = GameObject.FindWithTag("Player");
 		stdTopSpeed = RocketMovement.stdTopSpeed;
 		rocketFired = false;
+		mouseStart = transform.position;
 	}
     
     public void Update () {
@@ -48,6 +52,8 @@ public class Bow : MonoBehaviour{
 			SetParams();
 		} if(Event.current.type == EventType.mouseUp && !rocketFired) {
 			Fire();
+		} else if(Event.current.type == EventType.mouseDown && !rocketFired){
+			mouseStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		}
 	}
 	
@@ -96,7 +102,7 @@ public class Bow : MonoBehaviour{
 		Vector3 mouseVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		
 		//Set our parameters
-        this.dir = new Vector3(mouseVector.x - transform.position.x, mouseVector.y - transform.position.y, 0);
+        this.dir = new Vector3(mouseStart.x - mouseVector.x, mouseStart.y - mouseVector.y, 0);
         this.theta = Mathf.Atan(dir.y/dir.x) * (180.0f / Mathf.PI); //Convert to degrees
 		
 		//Draw the ray just to be sure we've got the correct vector calculations.
