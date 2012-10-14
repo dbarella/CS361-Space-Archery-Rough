@@ -41,7 +41,7 @@ public class Bow : MonoBehaviour{
 		player = transform.root.gameObject;
 		
 		//Source the Arrow's top speed
-		stdTopSpeed = ArrowMovement.stdTopSpeed;
+		stdTopSpeed = Arrow.stdTopSpeed;
 
 		arrowFired = false;
 		mouseStart = transform.position;
