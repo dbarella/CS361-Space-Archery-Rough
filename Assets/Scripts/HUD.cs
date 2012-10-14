@@ -8,24 +8,24 @@ using UnityEngine;
  * */
 public class HUD : MonoBehaviour {
 	
-	float maxFuel=0;	//The amount of fuel the rocket started with
-	float curFuel=0;	//The amount of fuel the rocket has right now
+	float maxFuel=0;	//The amount of fuel the arrow started with
+	float curFuel=0;	//The amount of fuel the arrow has right now
 	float maxHealth=0;	//Maximum Health
 	float curHealth=0;	//Current Health
-	RocketAttributes ra;	//The RocketAttributes script we'll be referencing
+	Arrow ra;	//The ArrowAttributes script we'll be referencing
 	
 	//Initialize values
 	void Start(){
-		ra = GameObject.FindWithTag("Rocket").GetComponent<RocketAttributes>();	//TODO placeholder - I need to figure out how to reference this later.
-		maxFuel = ra.getFuel();	//Only need to do this once.
-		maxHealth = ra.getHealth();
+		ra = GetComponent<Arrow>();
+		maxFuel = ra.GetFuel();	//Only need to do this once.
+		maxHealth = ra.GetHealth();
 	}
 	
-	//Update the counters to reflect the actual rocket's fuel/health
+	//Update the counters to reflect the actual arrow's fuel/health
 	void Update(){
 		//Update the current values, without changing the maximum values.
-		curFuel = ra.getFuel();
-		curHealth = ra.getHealth();
+		curFuel = ra.GetFuel();
+		curHealth = ra.GetHealth();
 	}
 	
 	//Draws the fuel bar on the screen

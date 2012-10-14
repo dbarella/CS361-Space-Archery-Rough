@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class GravityBehavior : MonoBehaviour {
+public class Gravity : MonoBehaviour {
 	
 	public float gravForce = 20;
 	public float orbitVelocity = 10;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class TargetBehavior : MonoBehaviour {
+public class Target : MonoBehaviour {
 	
 	//Reference to the GameManager
 	GameManagement mgmt;
@@ -23,8 +23,8 @@ public class TargetBehavior : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider col) {
-		if(col.tag == "Rocket") { //If we're hit by a rocket
-			Debug.Log("Target hit by rocket.");
+		if(col.tag == "Arrow") { //If we're hit by a arrow
+			Debug.Log("Target: Hit by arrow.");
 			Destroy(col);
 			mgmt.ResetLevel();
 		}

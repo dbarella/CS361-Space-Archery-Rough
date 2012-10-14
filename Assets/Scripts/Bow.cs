@@ -4,14 +4,19 @@
 
 public class Bow : MonoBehaviour{
 	
-	//Rocket GO
-	public GameObject rocket;
+	//Inspector Fields
+	//Arrow GO
+	public GameObject arrow;
 	
 	//Player GO
 	public GameObject player;
 	
-	//Development Variables
-	Vector3 offset = new Vector3(1,0,0);
+	//Cursor texture
+	public Texture2D cursorImage;
+	
+	//Internal Fields
+	//Offset from the bow at which the Arrow is instantiated
+	private Vector3 offset = new Vector3(1,0,0);
 	
 	//Direction to the user's cursor
     protected Vector3 dir;
@@ -19,23 +24,26 @@ public class Bow : MonoBehaviour{
 	//Angle between the x-axis and the user's cursor
     protected float theta;
 	
-	//Maximum allowed top speed
-	public float stdTopSpeed;
+	//Reference to the Arrow's maximum allowed top speed
+	private float stdTopSpeed;
 	
-	//Cursor texture
-	public Texture2D cursorImage;
-	
-	//rocketFired - true if the rocket has been fired, false otherwise
-	private bool rocketFired;
+	//arrowFired - true if the arrow has been fired, false otherwise
+	private bool arrowFired;
 	
 	//position where mouse is first clicked
 	private Vector3 mouseStart;
 	
     public void Start () {
+		//Disable the system cursor - we draw our own custom cursor
 		Screen.showCursor = false;
-		player = GameObject.FindWithTag("Player");
-		stdTopSpeed = RocketMovement.stdTopSpeed;
-		rocketFired = false;
+		
+		//Find the player to which this script is attached
+		player = transform.root.gameObject;
+		
+		//Source the Arrow's top speed
+		stdTopSpeed = ArrowMovement.stdTopSpeed;
+
+		arrowFired = false;
 		mouseStart = transform.position;
 	}
     
@@ -50,39 +58,38 @@ public class Bow : MonoBehaviour{
 		if(Input.GetMouseButton(0)) { //If the left mouse button is down
 			//Set the parameters of the cursor
 			SetParams();
-		} if(Event.current.type == EventType.mouseUp && !rocketFired) {
+		} if(Event.current.type == EventType.mouseUp && !arrowFired) {
 			Fire();
-		} else if(Event.current.type == EventType.mouseDown && !rocketFired){
+		} else if(Event.current.type == EventType.mouseDown && !arrowFired){
 			mouseStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		}
 	}
 	
 	/**
-	 * This method launches the rocket upon releasing the mouse button.
+	 * This method launches the arrow upon releasing the mouse button.
 	 **/
 	public void Fire() {
 		if(dir == Vector3.zero) { //Ignores false input when clicking on the window from another window
 			return;
 		}
 		
-		GameObject rocket = Instantiate(this.rocket, transform.position + offset, Quaternion.LookRotation(dir, Vector3.forward)) as GameObject;
-		rocket.transform.Rotate(new Vector3(-90,90,180)); //Fix the rocket's rotation
+		GameObject arrow = Instantiate(this.arrow, transform.position + offset, Quaternion.LookRotation(dir, Vector3.forward)) as GameObject;
+		arrow.transform.Rotate(new Vector3(-90,90,180)); //Fix the arrow's rotation
 		
-		//Set the rocket's direction
-		RocketMovement rck = rocket.GetComponent<RocketMovement>();
-		rck.SetDir(dir); //Set the rocket's direction vector
+		//Source the Arrow
+		Arrow a = arrow.GetComponent<Arrow>();
 		
-		//Set the rocket's initial velocity
+		//Set the arrow's initial velocity
 		float dirMag = dir.magnitude;
 		if(dirMag > stdTopSpeed) { //If the magnitude that the use wants is too great, set it to the top speed
-			rck.rigidbody.velocity = stdTopSpeed*dir.normalized;
+			arrow.rigidbody.velocity = stdTopSpeed*dir.normalized;
 		} else { //Otherwise, se the velocity to dir
-			rck.rigidbody.velocity = dir;
+			a.rigidbody.velocity = dir;
 		}
 			
 		//Disable player movement
-		player.GetComponent<PlayerMovement>().DisableMovement();
-		rocketFired = true;
+		player.GetComponent<Player>().DisableMovement();
+		arrowFired = true;
 	}
 	
 	/**
@@ -97,7 +104,7 @@ public class Bow : MonoBehaviour{
 	}
 	
 	/**
-	 * Sets the rocket headings on mouse down.
+	 * Sets the arrow headings on mouse down.
 	 * @see dir
 	 * @see theta
 	 **/
