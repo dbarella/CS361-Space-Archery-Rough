@@ -61,7 +61,11 @@ public class Bow : MonoBehaviour{
 	 * This method launches the rocket upon releasing the mouse button.
 	 **/
 	public void Fire() {
-		GameObject rocket = Instantiate(this.rocket, transform.position + offset, Quaternion.LookRotation(dir, Vector3.forward)/*AngleAxis(theta, new Vector3(1, 0, 0))*/) as GameObject;
+		if(dir == Vector3.zero) { //Ignores false input when clicking on the window from another window
+			return;
+		}
+		
+		GameObject rocket = Instantiate(this.rocket, transform.position + offset, Quaternion.LookRotation(dir, Vector3.forward)) as GameObject;
 		rocket.transform.Rotate(new Vector3(-90,90,180)); //Fix the rocket's rotation
 		
 		//Set the rocket's direction
