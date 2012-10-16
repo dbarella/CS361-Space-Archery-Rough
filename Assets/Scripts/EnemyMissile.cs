@@ -5,7 +5,6 @@ public class EnemyMissile : MonoBehaviour {
 	private float mag = 3;
 	private Vector3 dir;
 	private float timeOut;	//Counter until detonation
-	private EnemyMissileSpawner par;	//Pointer to the parent missile launcher
 	
 	void Start () {
 		//pass
@@ -21,10 +20,13 @@ public class EnemyMissile : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider col){
-		if(col.tag == "Rocket"){	//If we hit the rocket, reset the game
-			Debug.Log("Rocket hit by Missile! Game Over");
-			Camera.main.GetComponent<GameManagement>().ResetLevel();
+		if(col.tag == "Arrow"){
+			Debug.Log("EnemyMissile hit Arrow. Calling Arrow.Die()");
+			Arrow a = GameObject.FindWithTag("Arrow").GetComponent<Arrow>(); //Grab a ref to the Arrow
+			
+			//Kill the arrow
+			a.Die();
 		}
-		Destroy(gameObject);
+		Destroy(gameObject); //Destroy this EnemyMissile
 	}
 }

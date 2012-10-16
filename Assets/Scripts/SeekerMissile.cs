@@ -7,9 +7,9 @@ public class SeekerMissile : MonoBehaviour {
 	private float timeOut;
 	private SeekerMissileSpawner par;
 	private GameObject target;	//The player missile in almost every case
-
+	
 	void Start(){
-		//pass
+		//Pass
 	}
 	
 	public void InitEnemy(Vector3 direction, float s, float to, GameObject t){
@@ -26,11 +26,14 @@ public class SeekerMissile : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider col){
-		if(col.tag == "Rocket"){
-			Debug.Log("Rocket hit by Seeker Missile! Game Over");
-			Camera.main.GetComponent<GameManagement>().ResetLevel();
+		if(col.tag == "Arrow"){
+			Debug.Log("EnemyMissile hit Arrow. Calling Arrow.Die()");
+			Arrow a = GameObject.FindWithTag("Arrow").GetComponent<Arrow>(); //Grab a ref to the Arrow
+			
+			//Kill the arrow
+			a.Die();
 		}
-		Destroy(gameObject);
+		Destroy(gameObject); //Destroy this SeekerMissile
 	}
 
 
