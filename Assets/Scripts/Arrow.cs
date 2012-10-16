@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+//Brendan Wuz Here!  Comments below
 public class Arrow : MonoBehaviour {
 	
 	//Object References
@@ -41,7 +41,7 @@ public class Arrow : MonoBehaviour {
 	//Fuel used by boosting
 	private float boostFuel = 8;
 	//Fuel used by normal travel
-	private float stdFuel = 2;
+	private float stdFuel = 2;//Brendan: Do we have a way to decide how much fuel is given per level yet?
 	
 	void Awake() {
 		//Source the Game Management
@@ -68,6 +68,7 @@ public class Arrow : MonoBehaviour {
 		
 		if(fuel <= 0) { //If the arrow runs out of fuel, it's dead
 			Die();
+			//Brendan: Is this going to be arrow's behavior from now on, or a placeholder?
 		}
 	}
 	
@@ -117,7 +118,7 @@ public class Arrow : MonoBehaviour {
 	/**
 	 * Kills the arrow and calls management to reset the level
 	 **/
-	public void Die() {
+	public void Die() {//Brendan: Oooh, this is fancy now!
 		//Instantiate the Explosion
 		GameObject d = Instantiate(explosion, transform.position, transform.rotation) as GameObject;
 		
@@ -132,7 +133,7 @@ public class Arrow : MonoBehaviour {
 	//Getters and Setters
 	public float GetFuel(){
 		return fuel;
-	}
+	}//Brendan: Would a setFuel method be helpful here?
 	public float GetHealth(){
 		return health;
 	}
