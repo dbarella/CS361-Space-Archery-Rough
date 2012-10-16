@@ -19,7 +19,7 @@ public class Gravity : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		transform.RotateAroundLocal((rotationAxis), spinSpeed * Time.fixedDeltaTime);
+		RotateBody();
 	}
 	
 	void OnTriggerStay(Collider col) {
@@ -27,5 +27,12 @@ public class Gravity : MonoBehaviour {
 		Vector3 radius = (col.transform.position - transform.position).normalized;
 		col.attachedRigidbody.AddForce(-gravForce * radius);
 		col.transform.root.RotateAround(transform.position, Vector3.forward, orbitVelocity*Time.fixedDeltaTime);
+	}
+	
+	/**
+	 * Rotate this body around the rotationAxis at speed spinSpeed
+	 **/
+	private void RotateBody() {
+		transform.RotateAroundLocal((rotationAxis), spinSpeed * Time.fixedDeltaTime);
 	}
 }

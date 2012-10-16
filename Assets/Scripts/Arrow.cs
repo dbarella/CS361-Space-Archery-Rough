@@ -4,10 +4,12 @@ using System.Collections;
 public class Arrow : MonoBehaviour {
 	
 	//Object References
-	//Reference to the attached model
-	Transform arrowModel;
+	//Reference to the Explosion object
+	public GameObject explosion;
 	//Reference to the game management
-	GameManagement mgmt;
+	private GameManagement mgmt;
+	//Reference to the attached model
+	private Transform arrowModel;
 	
 	//General Attributes
 	public float fuel = 50;
@@ -16,6 +18,8 @@ public class Arrow : MonoBehaviour {
 	public float spin = 2.0f;
 	//true if the boost is on, false otherwise
 	private bool boostActive;
+	//Fade out time after the rocket explodes
+	private float fadeOutTime;
 	
 	//Speed Limits
 	//Standard top speed
@@ -39,13 +43,18 @@ public class Arrow : MonoBehaviour {
 	//Fuel used by normal travel
 	private float stdFuel = 2;
 	
-	void Start () {
+	void Awake() {
 		//Source the Game Management
 		mgmt = Camera.main.GetComponent<GameManagement>();
 		
 		//Source the Arrow Model
 		arrowModel = transform.FindChild("ArrowModel");
 		
+		//Source the Explosion
+		//explosion = GameObject.FindWithTag("Explosion");	
+	}
+	
+	void Start () {
 		//Set boost field initially to false
 		boostActive = false;
 		
@@ -55,9 +64,11 @@ public class Arrow : MonoBehaviour {
 	
 	void FixedUpdate() {
 		Movearrow();
-		
-		//Dan's Additions
 		RotateModel();
+		
+		if(fuel <= 0) { //If the arrow runs out of fuel, it's dead
+			Die();
+		}
 	}
 	
 	public void Movearrow() {
@@ -93,7 +104,7 @@ public class Arrow : MonoBehaviour {
 				//Spend fuel
 				UseFuel(boostFuel * Time.fixedDeltaTime);
 			}
-		}	
+		}
 	}
 	
 	/**
@@ -107,8 +118,15 @@ public class Arrow : MonoBehaviour {
 	 * Kills the arrow and calls management to reset the level
 	 **/
 	public void Die() {
+		//Instantiate the Explosion
+		GameObject d = Instantiate(explosion, transform.position, transform.rotation) as GameObject;
+		
+		//Inform Management of the event
+		Debug.Log("Arrow: Calling GameManagement.ArrowExploded()");
+		mgmt.ArrowExploded(d);
+			
+		//Destroy this Arrow
 		Destroy(gameObject);
-		mgmt.ResetLevel();
 	}
 	
 	//Getters and Setters

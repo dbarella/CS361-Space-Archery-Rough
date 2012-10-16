@@ -26,7 +26,7 @@ public class SeekerMissileSpawner : MonoBehaviour {
 		if(other.tag == "Rocket" && Time.fixedTime >= nextShot){
 			//create missile at current position, headed along the spawner's axis
 			GameObject o = Instantiate(Enemy, transform.position, Quaternion.identity) as GameObject;
-			SeekerMissileBehavior e = o.GetComponent<SeekerMissileBehavior>();
+			SeekerMissile e = o.GetComponent<SeekerMissile>();
 			//Fire a shot along the y-axis of the spawner, at speed speed
 			e.InitEnemy(transform.up,speed,missileTimeOut, other.transform.parent.gameObject);
 			//update time of next shot

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PreventFallOff : MonoBehaviour {
 	
+	//Reference to GameManagement
 	GameManagement mgmt;
 	
 	//x-axis boundaries
@@ -28,8 +29,13 @@ public class PreventFallOff : MonoBehaviour {
 		//Reset the game if this object falls off the screen
 		if((transform.position.x > max_x) || (transform.position.x < min_x)
 			|| (transform.position.y > max_y) || (transform.position.y < min_y)) {
-				Debug.Log(this.tag + " fell off the map.");
-				mgmt.ResetLevel();
+				Debug.Log("PreventFallOff: " + this.tag + " fell off the map.");
+				if(this.transform.root.gameObject.tag == "Arrow") {
+					Debug.Log("PreventFallOff: Calling Arrow.Die()");
+					GetComponent<Arrow>().Die();
+				} else {
+					mgmt.ResetLevel();
+				}
 		}
 	}
 }
