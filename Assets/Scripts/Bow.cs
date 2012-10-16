@@ -1,6 +1,6 @@
  using UnityEngine;
  using System.Collections;
- 
+ //Brendan Wuz Here Also!
 
 public class Bow : MonoBehaviour{
 	
@@ -90,7 +90,7 @@ public class Bow : MonoBehaviour{
 		//Disable player movement
 		player.GetComponent<Player>().DisableMovement();
 		arrowFired = true;
-	}
+	}//Brendan: This all looks good to me - never seen this mess up, so we're good here.
 	
 	/**
 	 * Draws a mousepointer under the mouse pointer so the user has an indication
@@ -108,7 +108,7 @@ public class Bow : MonoBehaviour{
 	 * @see dir
 	 * @see theta
 	 **/
-	public void SetParams() {
+	public void SetParams() {//Brendan: Is this where the arrow's fuel is set?
 		//Temporary mouse vector
 		Vector3 mouseVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		
