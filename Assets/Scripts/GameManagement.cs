@@ -18,7 +18,6 @@ public class GameManagement : MonoBehaviour{
 	
 	public void ArrowExploded(GameObject detonator) {
 		this.duration = detonator.GetComponent<Detonator>().duration;
-		//Debug.Log("GameManagement: Panic?");
 		//Wait for time
 		StartCoroutine(ArrowExplosionTimer());
 	}

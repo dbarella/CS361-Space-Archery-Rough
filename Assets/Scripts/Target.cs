@@ -4,7 +4,7 @@ using System.Collections;
 public class Target : MonoBehaviour {
 	
 	//Reference to the GameManager
-	GameManagement mgmt;
+	//GameManagement mgmt;
 	
 	//Dev Variable
 	private float spin = 1.0f;
@@ -12,8 +12,10 @@ public class Target : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		mgmt = Camera.main.GetComponent<GameManagement>();
-		rigidbody.AddRelativeTorque(Vector3.forward * spin, ForceMode.VelocityChange);
+//		mgmt = Camera.main.GetComponent<GameManagement>();
+		rigidbody.AddRelativeTorque(Vector3.forward * spin, ForceMode.VelocityChange); //Rotate the target
+		
+		//Lock the target to be xBuffer pixels to the left of the right camera bound
 		transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth - xBuffer, Camera.main.pixelHeight/2, -Camera.main.transform.position.z));
 	}
 	
@@ -25,8 +27,7 @@ public class Target : MonoBehaviour {
 	void OnTriggerEnter(Collider col) {
 		if(col.tag == "Arrow") { //If we're hit by a arrow
 			Debug.Log("Target: Hit by arrow.");
-			Destroy(col);
-			mgmt.ResetLevel();
+			GameObject.FindWithTag("Arrow").GetComponent<Arrow>().Die(); //Kill the arrow
 		}
 	}
 }
