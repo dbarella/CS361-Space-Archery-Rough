@@ -20,12 +20,12 @@ public class GameManagement : MonoBehaviour{
 		this.duration = detonator.GetComponent<Detonator>().duration;
 		//Debug.Log("GameManagement: Panic?");
 		//Wait for time
-		ArrowExplosionTimer();
+		StartCoroutine(ArrowExplosionTimer());
 	}
 	
 	//Yield for the time passed in
 	IEnumerator ArrowExplosionTimer() {
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(duration);
 		ResetLevel();
 	}
 }
