@@ -11,6 +11,6 @@ public class Repulsor : MonoBehaviour{
 	
 	public void OnTriggerStay(Collider col){
 		//Note that this will move any object in the local transform's +z direction.
-		col.attachedRigidbody.AddForce(this.transform.forward * str);
+		col.attachedRigidbody.AddForce(this.transform.right * str);
 	}
 }

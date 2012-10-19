@@ -88,6 +88,7 @@ public class Bow : MonoBehaviour{
 		}
 			
 		//Disable player movement
+		Debug.Log("Bow: calling Player.DisableMovement()");
 		player.GetComponent<Player>().DisableMovement();
 		arrowFired = true;
 	}//Brendan: This all looks good to me - never seen this mess up, so we're good here.

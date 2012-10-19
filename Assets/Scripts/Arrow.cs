@@ -7,9 +7,9 @@ public class Arrow : MonoBehaviour {
 	//Reference to the Explosion object
 	public GameObject explosion;
 	//Reference to the game management
-	private GameManagement mgmt;
+	protected GameManagement mgmt;
 	//Reference to the attached model
-	private Transform arrowModel;
+	protected Transform arrowModel;
 	
 	//General Attributes
 	public float fuel = 50;
@@ -17,9 +17,9 @@ public class Arrow : MonoBehaviour {
 	//Spin speed
 	public float spin = 2.0f;
 	//true if the boost is on, false otherwise
-	private bool boostActive;
+	protected bool boostActive;
 	//Fade out time after the rocket explodes
-	private float fadeOutTime;
+	protected float fadeOutTime;
 	
 	//Speed Limits
 	//Standard top speed
@@ -37,11 +37,11 @@ public class Arrow : MonoBehaviour {
 	
 	//Fuel Expediture
 	//Fuel used by rotating
-	private float rotateFuel = 4;
+	protected float rotateFuel = 4;
 	//Fuel used by boosting
-	private float boostFuel = 8;
+	protected float boostFuel = 8;
 	//Fuel used by normal travel
-	private float stdFuel = 2;//Brendan: Do we have a way to decide how much fuel is given per level yet?
+	protected float stdFuel = 2;//Brendan: Do we have a way to decide how much fuel is given per level yet?
 	
 	void Awake() {
 		//Source the Game Management
@@ -54,7 +54,7 @@ public class Arrow : MonoBehaviour {
 		//explosion = GameObject.FindWithTag("Explosion");	
 	}
 	
-	void Start () {
+	public void Start () {
 		//Set boost field initially to false
 		boostActive = false;
 		
@@ -62,7 +62,7 @@ public class Arrow : MonoBehaviour {
 		rigidbody.constraints = RigidbodyConstraints.FreezeRotationX|RigidbodyConstraints.FreezeRotationY|RigidbodyConstraints.FreezePositionZ;
 	}
 	
-	void FixedUpdate() {
+	public void FixedUpdate() {
 		Movearrow();
 		RotateModel();
 		

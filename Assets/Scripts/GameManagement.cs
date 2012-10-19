@@ -5,13 +5,14 @@ public class GameManagement : MonoBehaviour{
 	
 	bool timingEvent;
 	float duration;
-	
+
+	void Awake() {}	
 	void Start(){}
 	void Update(){}
 	
 	//Resets the currently loaded level, on request
 	public void ResetLevel(){
-		Debug.Log("Resetting Level \"" + Application.loadedLevelName + "\"");
+		Debug.Log("GameManagement: Resetting Level \"" + Application.loadedLevelName + "\"");
 		Application.LoadLevel(Application.loadedLevel);
 	}
 	
@@ -19,13 +20,12 @@ public class GameManagement : MonoBehaviour{
 		this.duration = detonator.GetComponent<Detonator>().duration;
 		//Debug.Log("GameManagement: Panic?");
 		//Wait for time
-		StartCoroutine(ArrowExplosionTimer());
-		
-		ResetLevel();
+		ArrowExplosionTimer();
 	}
 	
 	//Yield for the time passed in
 	IEnumerator ArrowExplosionTimer() {
-		yield return new WaitForSeconds(duration);
+		yield return new WaitForSeconds(3);
+		ResetLevel();
 	}
 }
