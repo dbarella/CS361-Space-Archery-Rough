@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemyMissileSpawner : MonoBehaviour {
+public class MissileSpawner : MonoBehaviour {
 	
 	public float interval;	//Amount of time, in seconds, between shots
 	float nextShot;		//Internal timer
