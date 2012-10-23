@@ -353,7 +353,7 @@ mark {
 <body>
   <div id="wrapper">
     <div id="content">
-<h1>Space Archery Base Engine - Rev. 04</h1>
+<h1>Space Archery Base Engine - Rev. 05</h1>
 
 <table>
 <colgroup>
@@ -387,7 +387,7 @@ mark {
 	<td style="text-align:left;">Integral</td>
 	<td style="text-align:left;">Arrow</td>
 	<td style="text-align:left;">ArrowModel</td>
-	<td style="text-align:left;">Arrow.cs + ArrowAlt.cs</td>
+	<td style="text-align:left;">Arrow.cs + ArrowAstAlt.cs + ArrowStickyAlt.cs</td>
 </tr>
 <tr>
 	<td style="text-align:left;">Partial</td>
@@ -425,7 +425,7 @@ mark {
 	<td style="text-align:left;">Wormhole.cs</td>
 </tr>
 <tr>
-	<td style="text-align:left;">Yes</td>
+	<td style="text-align:left;">Partial</td>
 	<td style="text-align:left;">Integral</td>
 	<td style="text-align:left;">Unguided Missile</td>
 	<td style="text-align:left;">RocketModel w/ different texture</td>
@@ -496,7 +496,7 @@ mark {
 </tr>
 </tbody>
 </table>
-<h4>Further updates to be posted on 19 Oct. 2012</h4>
+<h4>Further updates to be posted on 24 Oct. 2012</h4>
 
 <h4>Script Details</h4>
 
@@ -514,10 +514,15 @@ mark {
 <li>Space controls boost. Boost is active when depressed, inactive otherwise. Uses fuel.</li>
 </ol></li>
 </ul></li>
-<li>ArrowAlt.cs
+<li>ArrowAstAlt.cs
 
 <ul>
 <li>Alternate movement script - inherits from Arrow.cs. Based on Asteroids - style movement.</li>
+</ul></li>
+<li>ArrowStickyAlt.cs
+
+<ul>
+<li>Another alternate movement script, closer to what Josh has envisioned for the final game. For this script, you&#8217;ll need to extend Arrow and override Move(). The control scheme itself centers on the idea that the arrow should always &#8216;want&#8217; to move in the direction in which it was fired. The player should be able to &#8216;nudge&#8217; the arrow up and down, but it&#8217;ll return to the centerline in between nudges. It&#8217;s crucial that the arrow can be rotated in any direction and continue as if it were fired in that direction, otherwise GBodies won&#8217;t be able to rotate the Arrow properly. So make sure this is rotation-independent. <img src="file://localhost/Users/Dan/Documents/OberCollege/2012-2013/Fall%20Semester/CS361/SomethingStupid/Space%20Archery%20Base%20Engine/Space%20Archery%20Rev%2000/Documentation/ArrowStickyAlt%20Concept.JPG" alt="A Crude Diagram" /></li>
 </ul></li>
 <li>Bow.cs
 
@@ -565,10 +570,10 @@ mark {
 <li>EnemyMissileSpawner.cs
 
 <ul>
-<li>This script will go on an empty GO, which will then become an EnemyMissileSpawner. The script will need to instantiate EnemyMissiles in the direction of the spawner&#8217;s local x coordinate at random intervals. Have two class fields that vary the times which can be randomly picked (Mathf.Random.Range(float min, float max)). Remember to count down to zero using Time.deltaTime, not up to infinity.</li>
+<li>This script will go on an empty GO, which will then become an EnemyMissileSpawner. The script will need to instantiate EnemyMissiles in the direction of the spawner&#8217;s local x coordinate at random intervals. Start by implementing a fixed timer, and then add on a random functionality - design the code so that you can choose between a fixed or a random timer via the inspector (Use a public bool, then write the code to take that into accout). Have two class fields (also exposed to the inspector) that vary the times which can be randomly picked (Mathf.Random.Range(float min, float max)). Remember to count down to zero using Time.deltaTime, not up to infinity.</li>
 <li>Contains a field bool isGuided which is true if this spawner shoots guided missiles, false otherwise</li>
-<li>Create a method SpawnMissile() that Instantiates an EnemyMissile/SeekerMissile based on the value of isGuided in the direction of the spawner&#8217;s local x coordinate.</li>
-<li>In Update(), implement the randomized timer described above. When the timer reaches zero, call SpawnEnemyMissile(), then reset the timer to a new random amount.</li>
+<li>Create a method SpawnMissile() that Instantiates an EnemyMissile/SeekerMissile based on the value of isGuided in the direction of the spawner&#8217;s local +x coordinate.</li>
+<li>In Update(), implement the randomized timer described above. When the timer reaches zero, call SpawnEnemyMissile(), then reset the timer to a new amount.</li>
 </ul></li>
 <li>Repulsor.cs
 
