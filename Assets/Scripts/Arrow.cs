@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-//Brendan Wuz Here!  Comments below
 public class Arrow : MonoBehaviour {
 	
 	//Object References
@@ -23,13 +22,13 @@ public class Arrow : MonoBehaviour {
 	
 	//Speed Limits
 	//Standard top speed
-	public static float stdTopSpeed = 20.0f;
+	public static float stdTopSpeed = 35.0f;
 	//Boost top speed multiplier
 	public float boostSpeedMultiplier = 1.2f;
 	
 	//Thrust Force
 	//Standard force (without boost)
-	public float standardForce = 500.0f;
+	public float standardForce = 200.0f;
 	//Boost force mutliplier
 	public float boostMultiplier = 1.75f;
 	//Rotation torque
@@ -48,10 +47,7 @@ public class Arrow : MonoBehaviour {
 		mgmt = Camera.main.GetComponent<GameManagement>();
 		
 		//Source the Arrow Model
-		arrowModel = transform.FindChild("ArrowModel");
-		
-		//Source the Explosion
-		//explosion = GameObject.FindWithTag("Explosion");	
+		arrowModel = transform.FindChild("ArrowModel");	
 	}
 	
 	public void Start () {
@@ -73,8 +69,6 @@ public class Arrow : MonoBehaviour {
 	}
 	
 	public void Movearrow() {
-		transform.Translate(new Vector3(1,0,0) * Time.fixedDeltaTime);
-		
 		//Get steering input
 		if(Input.GetKey(KeyCode.UpArrow) && fuel > 0) {
 			transform.Rotate(rotationTorque * Vector3.forward * Time.fixedDeltaTime);
@@ -94,8 +88,7 @@ public class Arrow : MonoBehaviour {
 		
 		//Apply thrust
 		if(fuel > 0) { //If we have fuel
-			float forwardSpeed = Vector3.Dot(rigidbody.velocity, transform.forward); //Find our forward speed
-			
+			float forwardSpeed = Vector3.Dot(rigidbody.velocity, transform.right); //Find our forward speed
 			if(!boostActive && forwardSpeed <= stdTopSpeed) { //If not boosting and not at top speed, add force
 				rigidbody.AddRelativeForce(standardForce * Vector3.right * Time.fixedDeltaTime);	
 				//Spend fuel
@@ -104,7 +97,9 @@ public class Arrow : MonoBehaviour {
 				rigidbody.AddRelativeForce(boostMultiplier * standardForce * Vector3.right * Time.fixedDeltaTime);
 				//Spend fuel
 				UseFuel(boostFuel * Time.fixedDeltaTime);
-			}
+			} //else if(forwardSpeed > stdTopSpeed) { //If we're at the top speed, we'll apply a dampener
+				rigidbody.AddRelativeForce(-Vector3.right * Time.fixedDeltaTime);
+			//}
 		}
 	}
 	
@@ -142,5 +137,8 @@ public class Arrow : MonoBehaviour {
 	}
 	public void UseFuel(float spent){
 		fuel -= spent;
+	}
+	public float GetTopSpeed() {
+		return stdTopSpeed;
 	}
 }

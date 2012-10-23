@@ -14,8 +14,6 @@ public class ArrowAlt : Arrow {
 	public float brakeForce = 200.0f;
 	
 	public void Move() {
-		transform.Translate(new Vector3(1,0,0) * Time.fixedDeltaTime);
-		
 		//Get steering input
 		if(Input.GetKey(KeyCode.UpArrow) && fuel > 0) {
 			transform.Rotate(rotationTorque * Vector3.forward * Time.fixedDeltaTime);

@@ -59,7 +59,7 @@ public class Gravity : MonoBehaviour {
 	private void AddOrbitalBody(Collider col) {
 		int ident = col.transform.root.gameObject.GetInstanceID(); //Get the GO's instance ID
 		
-		if(debugMode) Debug.Log(this.GBodyIdent() + ": Current tracked OBodies:\n" + orbitObjects.ToString());
+		//if(debugMode) Debug.Log(this.GBodyIdent() + ": Current tracked OBodies:\n" + orbitObjects.ToString());
 		
 		if(!orbitObjects.ContainsKey(ident)) {
 			if(debugMode) Debug.Log(this.GBodyIdent()+ ": Adding " + ident);

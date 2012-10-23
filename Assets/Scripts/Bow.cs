@@ -25,7 +25,7 @@ public class Bow : MonoBehaviour{
     protected float theta;
 	
 	//Reference to the Arrow's maximum allowed top speed
-	private float stdTopSpeed;
+	//private float stdTopSpeed;
 	
 	//arrowFired - true if the arrow has been fired, false otherwise
 	private bool arrowFired;
@@ -41,7 +41,7 @@ public class Bow : MonoBehaviour{
 		player = transform.root.gameObject;
 		
 		//Source the Arrow's top speed
-		stdTopSpeed = Arrow.stdTopSpeed;
+		//stdTopSpeed = Arrow.stdTopSpeed;
 
 		arrowFired = false;
 		mouseStart = transform.position;
@@ -81,8 +81,8 @@ public class Bow : MonoBehaviour{
 		
 		//Set the arrow's initial velocity
 		float dirMag = dir.magnitude;
-		if(dirMag > stdTopSpeed) { //If the magnitude that the use wants is too great, set it to the top speed
-			arrow.rigidbody.velocity = stdTopSpeed*dir.normalized;
+		if(dirMag > Arrow.stdTopSpeed) { //If the magnitude that the use wants is too great, set it to the top speed
+			arrow.rigidbody.velocity = Arrow.stdTopSpeed*dir.normalized;
 		} else { //Otherwise, se the velocity to dir
 			a.rigidbody.velocity = dir;
 		}
