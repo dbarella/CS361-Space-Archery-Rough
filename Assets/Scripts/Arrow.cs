@@ -59,7 +59,7 @@ public class Arrow : MonoBehaviour {
 	}
 	
 	public void FixedUpdate() {
-		Movearrow();
+		Move();
 		RotateModel();
 		
 		if(fuel <= 0) { //If the arrow runs out of fuel, it's dead
@@ -68,7 +68,7 @@ public class Arrow : MonoBehaviour {
 		}
 	}
 	
-	public void Movearrow() {
+	public void Move() {
 		//Get steering input
 		if(Input.GetKey(KeyCode.UpArrow) && fuel > 0) {
 			transform.Rotate(rotationTorque * Vector3.forward * Time.fixedDeltaTime);
