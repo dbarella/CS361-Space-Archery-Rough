@@ -498,6 +498,12 @@ mark {
 </table>
 <h4>Further updates to be posted on 24 Oct. 2012</h4>
 
+<p>&#8212; Overall Game Flow &#8212;
+<img src="Images/OverallFlow.JPG" alt="Overall Game Flow" /> </p>
+
+<p>&#8212;Player Detail (Ingame) Flow &#8212;
+<img src="Images/PlayerFlow.JPG" alt="Player Flow" /> </p>
+
 <h4>Script Details</h4>
 
 <p>All classes need getters and possibly setters for the variables specified here. They should all handle variable mutation in methods that other classes can call. There should be no mutation being done by an outside class - everything needs to pass through the script in which the variables reside.</p>
@@ -522,7 +528,7 @@ mark {
 <li>ArrowStickyAlt.cs
 
 <ul>
-<li>Another alternate movement script, closer to what Josh has envisioned for the final game. For this script, you&#8217;ll need to extend Arrow and override Move(). The control scheme itself centers on the idea that the arrow should always &#8216;want&#8217; to move in the direction in which it was fired. The player should be able to &#8216;nudge&#8217; the arrow up and down, but it&#8217;ll return to the centerline in between nudges. It&#8217;s crucial that the arrow can be rotated in any direction and continue as if it were fired in that direction, otherwise GBodies won&#8217;t be able to rotate the Arrow properly. So make sure this is rotation-independent. <img src="ArrowStickyAltConcept.JPG" alt="A Crude Diagram" /></li>
+<li>Another alternate movement script, closer to what Josh has envisioned for the final game. For this script, you&#8217;ll need to extend Arrow and override Move(). The control scheme itself centers on the idea that the arrow should always &#8216;want&#8217; to move in the direction in which it was fired. The player should be able to &#8216;nudge&#8217; the arrow up and down, but it&#8217;ll return to the centerline in between nudges. It&#8217;s crucial that the arrow can be rotated in any direction and continue as if it were fired in that direction, otherwise GBodies won&#8217;t be able to rotate the Arrow properly. So make sure this is rotation-independent. <img src="Images/ArrowStickyAltConcept.JPG" alt="A Crude Diagram" /></li>
 </ul></li>
 <li>Bow.cs
 
@@ -580,7 +586,7 @@ mark {
 <ul>
 <li>Attached to a trigger GO; adds a constant force in the direction of the transform&#8217;s positive x axis to any object within the trigger bounds.</li>
 </ul></li>
-<li>WallPulsor
+<li>Wallpulsor
 
 <ul>
 <li>Combination of Repulsor and Wall objects; Repulsor on the +y side with its +x axis facing out, Wall on the -y side with its +x axis facing out.</li>
