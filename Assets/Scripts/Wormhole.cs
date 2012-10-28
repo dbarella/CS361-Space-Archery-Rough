@@ -14,7 +14,8 @@ public class Wormhole : MonoBehaviour{
 	float timer;		//The time left until we can warp
 	void Update(){
 		//Decrement the timer, so we know when we can warp again
-		timer -= Time.deltaTime;
+		if(timer >= 0)
+			timer -= Time.deltaTime;
 	}
 	
 	void Start(){
@@ -23,8 +24,8 @@ public class Wormhole : MonoBehaviour{
 	
 	//When colliding with a arrow, teleport it and set the exit's timer
 	void OnTriggerEnter(Collider other){
-		Debug.Log(other.gameObject.name);
-		if(other.tag == "arrow" && timer<0){
+		Debug.Log(other.gameObject.name + " warped to: " + exit);
+		if(other.tag == "Arrow" && timer<0){
 			other.transform.parent.transform.position = exit.transform.position;
 			exit.GetComponent<Wormhole>().timer = coolDown;
 		}
