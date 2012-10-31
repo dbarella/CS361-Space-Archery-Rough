@@ -27,7 +27,7 @@ public class MissileSpawner : MonoBehaviour {
 			GameObject o = Instantiate(Enemy, transform.position, Quaternion.identity) as GameObject;
 			EnemyMissile e = o.GetComponent<EnemyMissile>();
 			//Fire a shot along the y-axis of the spawner, at speed speed
-			e.InitEnemy(transform.right,speed,missileTimeOut);
+			e.InitEnemy(transform.up,speed,missileTimeOut);
 			//update time of next shot
 			nextShot = Time.fixedTime + interval;
 		}

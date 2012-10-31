@@ -20,6 +20,10 @@ public class SeekerMissile : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
+		//If the target has been destroyed, die.
+		if(target == null){
+			Destroy (gameObject);
+		}
 		Vector3 toAdd = (mag*(target.transform.position - transform.position)* Time.fixedDeltaTime);  
 		current = current + toAdd;
 		transform.Translate(current * Time.fixedDeltaTime);	
