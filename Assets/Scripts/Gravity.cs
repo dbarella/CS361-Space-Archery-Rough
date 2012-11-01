@@ -21,7 +21,12 @@ public class Gravity : MonoBehaviour {
 	//Toggle method debug statements
 	public bool debugMode = false;
 	
-	public float gravForce = 20;
+	//Arbitrary scalar constant of gravity
+	public float gravForce = 2500;
+	//Adjusted gravForce constant to scale approximately against the Newtonian equation
+	private float rtGravForce;
+	//If true this GBody will use the equation for standard Newtonian Gravitation, otherwise it will use a 1/r approximant
+	public bool newtonianForce = true;
 	
 	//Random axis of rotation
 	private Vector3 rotationAxis;
@@ -35,6 +40,7 @@ public class Gravity : MonoBehaviour {
 		rotationAxis = new Vector3(Random.Range(-90.0f, 90.0f), Random.Range(-90.0f, 90.0f), Random.Range(-90.0f, 90.0f));
 		spinSpeed = Random.Range(-1.0f, 1.0f);
 		orbitObjects = new Hashtable();
+		rtGravForce = Mathf.Pow(gravForce, 1.5f);
 	}
 	
 	// Update is called once per frame
@@ -82,7 +88,13 @@ public class Gravity : MonoBehaviour {
 		//Find the radius vector from the collider to the center of this object
 		Vector3 radius = (col.transform.position - transform.position);
 		Vector3 rHat = radius.normalized;
-		col.attachedRigidbody.AddForce(-(gravForce/radius.magnitude) * rHat);
+		
+		if(newtonianForce) { //Newtonian force equation
+			col.attachedRigidbody.AddForce(-(rtGravForce/radius.sqrMagnitude) * rHat);
+		} else { //Approximant
+			col.attachedRigidbody.AddForce(-(gravForce/radius.magnitude) * rHat);
+		}
+		//col.attachedRigidbody.AddForce(-(gravForce/(newtonianForce ? radius.sqrMagnitude : radius.magnitude)) * rHat);
 	}
 	
 	/**
