@@ -11,6 +11,10 @@ using System.Collections;
  * 
  * Note: This class violates our scope convention - it modifies the rotation of an orbiting OBody
  * so that the OBody remains in the same orientation about this GBody while within the sphere of influence.
+ * 
+ * To Do: 
+ * 	Modify the code to rotate the surface of the GBody, not the whole GO.
+ * 	Rotate objects in orbit about this GBody.
  **/
 public class Gravity : MonoBehaviour {
 	
@@ -76,8 +80,9 @@ public class Gravity : MonoBehaviour {
 	
 	private void AttractOrbitalBody(Collider col) {
 		//Find the radius vector from the collider to the center of this object
-		Vector3 radius = (col.transform.position - transform.position).normalized;
-		col.attachedRigidbody.AddForce(-gravForce * radius);
+		Vector3 radius = (col.transform.position - transform.position);
+		Vector3 rHat = radius.normalized;
+		col.attachedRigidbody.AddForce(-(gravForce/radius.magnitude) * rHat);
 	}
 	
 	/**
