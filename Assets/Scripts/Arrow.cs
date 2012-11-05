@@ -30,7 +30,7 @@ public class Arrow : MonoBehaviour {
 	//Multipliers!
 	public float boostMultiplier = 1.5f;
 	public float brakeMultiplier = 0.75f;
-	public float reAccelMultiplier = 1.2f;
+	//public float reAccelMultiplier = 1.2f;
 	public float accelMultiplier = 1.01f;
 	public float decelMultiplier = 0.9f;
 
@@ -39,11 +39,11 @@ public class Arrow : MonoBehaviour {
 	//the speed we want
 	public float desiredSpeed;
 	//Standard force
-	public float standardForce = 750.0f;
+	//public float standardForce = 750.0f;
 	//re-acceleration force (to get back up to std after braking)
-	public float reAccelForce = 400.0f;
+	//public float reAccelForce = 400.0f;
 	//Braking force
-	public float brakeForce = 500.0f;
+	//public float brakeForce = 500.0f;
 	//Rotation torque
 	public float rotationTorque = 100.0f;
 
