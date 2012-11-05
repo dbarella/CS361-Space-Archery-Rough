@@ -10,7 +10,7 @@ using System.Collections;
  * 
  */
 
-public class ArrowAstAlt : Arrow {
+public class ArrowAstAlt : ArrowOld {
 	public float brakeForce = 200.0f;
 	
 	new public void Move() { //Override Arrow.Move()

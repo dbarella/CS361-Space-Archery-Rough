@@ -80,12 +80,12 @@ public class Bow : MonoBehaviour{
 		Arrow a = arrow.GetComponent<Arrow>();
 		
 		//Set the arrow's initial velocity
-		float dirMag = dir.magnitude;
-		if(dirMag > Arrow.stdTopSpeed) { //If the magnitude that the use wants is too great, set it to the top speed
-			arrow.rigidbody.velocity = Arrow.stdTopSpeed*dir.normalized;
-		} else { //Otherwise, se the velocity to dir
-			a.rigidbody.velocity = dir;
-		}
+//		float dirMag = dir.magnitude;
+//		if(dirMag > Arrow.stdTopSpeed) { //If the magnitude that the use wants is too great, set it to the top speed
+//			arrow.rigidbody.velocity = Arrow.stdTopSpeed*dir.normalized;
+//		} else { //Otherwise, se the velocity to dir
+//			a.rigidbody.velocity = dir;
+//		}
 			
 		//Disable player movement
 		Debug.Log("Bow: calling Player.DisableMovement()");

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
-public class Arrow : MonoBehaviour {
-
+public class ArrowOld : MonoBehaviour {
+	
 	//Object References
 	//Reference to the Explosion object
 	public GameObject explosion;
@@ -9,7 +9,7 @@ public class Arrow : MonoBehaviour {
 	protected GameManagement mgmt;
 	//Reference to the attached model
 	protected Transform arrowModel;
-
+	
 	//General Attributes
 	public float fuel = 50;
 	public float health = 100;
@@ -17,158 +17,118 @@ public class Arrow : MonoBehaviour {
 	public float spin = 2.0f;
 	//true if the boost is on, false otherwise
 	protected bool boostActive;
-	//true if we brake, false otherwise;
-	protected bool brakeActive;
 	//Fade out time after the rocket explodes
 	protected float fadeOutTime;
-
-	//Speed Limits
-	public static float minSpeed = 5.0f;
-	public static float stdSpeed = 15.0f;
-	public static float maxSpeed = 50.0f;
 	
-	//Multipliers!
-	public float boostMultiplier = 1.5f;
-	public float brakeMultiplier = 0.75f;
-	public float reAccelMultiplier = 1.2f;
-	public float accelMultiplier = 1.01f;
-	public float decelMultiplier = 0.9f;
-
-	//our forward speed
-	public float forwardSpeed;
-	//the speed we want
-	public float desiredSpeed;
-	//Standard force
-	public float standardForce = 750.0f;
-	//re-acceleration force (to get back up to std after braking)
-	public float reAccelForce = 400.0f;
-	//Braking force
-	public float brakeForce = 500.0f;
+	//Speed Limits
+	//Standard top speed
+	public static float stdTopSpeed = 35.0f;
+	//Boost top speed multiplier
+	public float boostSpeedMultiplier = 1.2f;
+	
+	//Thrust Force
+	//Standard force (without boost)
+	public float standardForce = 200.0f;
+	//Boost force mutliplier
+	public float boostMultiplier = 1.75f;
 	//Rotation torque
 	public float rotationTorque = 100.0f;
-
+	
 	//Fuel Expediture
-	//Fuel used by braking
-	protected float brakeFuel = 6;
 	//Fuel used by rotating
 	protected float rotateFuel = 4;
 	//Fuel used by boosting
 	protected float boostFuel = 8;
 	//Fuel used by normal travel
 	protected float stdFuel = 2;//Brendan: Do we have a way to decide how much fuel is given per level yet?
-
+	
 	void Awake() {
 		//Source the Game Management
 		mgmt = Camera.main.GetComponent<GameManagement>();
-
+		
 		//Source the Arrow Model
 		arrowModel = transform.FindChild("ArrowModel");	
 	}
-
+	
 	public void Start () {
 		//Set boost field initially to false
 		boostActive = false;
-		brakeActive = false;
-		forwardSpeed = stdSpeed;
-		desiredSpeed = stdSpeed;
+		
 		//Restrict movement and rotation
 		rigidbody.constraints = RigidbodyConstraints.FreezeRotationX|RigidbodyConstraints.FreezeRotationY|RigidbodyConstraints.FreezePositionZ;
 	}
-
+	
 	public void FixedUpdate() {
 		Move();
 		RotateModel();
-
+		
 		if(fuel <= 0) { //If the arrow runs out of fuel, it's dead
 			Die();
 			//Brendan: Is this going to be arrow's behavior from now on, or a placeholder?
 		}
 	}
-
+	
 	public void Move() {
 		//Get steering input
-		if(Input.GetKey(KeyCode.A) && fuel > 0) {
-			transform.Rotate(rotationTorque * Vector3.forward * Time.deltaTime);
-			//UseFuel(rotateFuel*Time.deltaTime);
+		if(Input.GetKey(KeyCode.UpArrow) && fuel > 0) {
+			transform.Rotate(rotationTorque * Vector3.forward * Time.fixedDeltaTime);
+			UseFuel(rotateFuel*Time.fixedDeltaTime);
 		}
-		else if(Input.GetKey(KeyCode.D) && fuel > 0) {
-			transform.Rotate(rotationTorque * -Vector3.forward * Time.deltaTime);
-			//UseFuel(rotateFuel*Time.deltaTime);
-		}
-		
-		if(Input.GetKey(KeyCode.S) && fuel > 0) {//if we brake
-			brakeActive = true;
-		}else{
-			brakeActive = false;
+		else if(Input.GetKey(KeyCode.DownArrow) && fuel > 0) {
+			transform.Rotate(rotationTorque * -Vector3.forward * Time.fixedDeltaTime);
+			UseFuel(rotateFuel*Time.fixedDeltaTime);
 		}
 		
 		//Toggle boost
-		if((Input.GetKey(KeyCode.Space) || (Input.GetKey(KeyCode.W))) && fuel > 0){
+		if(Input.GetKey(KeyCode.Space) && fuel > 0){
 			boostActive = true;
 		} else {
 			boostActive = false;
 		}
-
+		
 		//Apply thrust
 		if(fuel > 0) { //If we have fuel
-			
-			if(boostActive && desiredSpeed < maxSpeed) { //If boosting and not at top speed
-				desiredSpeed = Accelerate(desiredSpeed);	//add the boost multiplier
-				
-			}
-			if(brakeActive && desiredSpeed > minSpeed) {//if braking and not at minspeed
-				desiredSpeed = Decelerate(desiredSpeed);	//add brake multiplier
-			}
-			if(forwardSpeed < stdSpeed) { //If below stdSpeed, get back up there
-				desiredSpeed = Accelerate(desiredSpeed);
-				
-			}
-			if(forwardSpeed < desiredSpeed) {
-				forwardSpeed = Accelerate(forwardSpeed);	
-			}else if(forwardSpeed > desiredSpeed) {
-				forwardSpeed = Decelerate(forwardSpeed);	
-			}
-			transform.Translate(forwardSpeed * Vector3.right * Time.deltaTime);
+			float forwardSpeed = Vector3.Dot(rigidbody.velocity, transform.right); //Find our forward speed
+			if(!boostActive && forwardSpeed <= stdTopSpeed) { //If not boosting and not at top speed, add force
+				rigidbody.AddRelativeForce(standardForce * Vector3.right * Time.fixedDeltaTime);	
+				//Spend fuel
+				UseFuel(stdFuel*Time.fixedDeltaTime);
+			} else if(boostActive && forwardSpeed <= boostSpeedMultiplier * stdTopSpeed) { //If boosting, add boost force
+				rigidbody.AddRelativeForce(boostMultiplier * standardForce * Vector3.right * Time.fixedDeltaTime);
+				//Spend fuel
+				UseFuel(boostFuel * Time.fixedDeltaTime);
+			} //else if(forwardSpeed > stdTopSpeed) { //If we're at the top speed, we'll apply a dampener
+				rigidbody.AddRelativeForce(-Vector3.right * Time.fixedDeltaTime);
+			//}
 		}
 	}
-
-	private float Accelerate(float fs){
-		return (fs * accelMultiplier);
-	}
 	
-	private float Decelerate(float fs){
-		return (fs * decelMultiplier);
-	}
-
 	/**
 	 * Rotates the arrow model about its axis for visual flair
 	 **/
 	private void RotateModel() {
-		arrowModel.RotateAroundLocal(Vector3.right, spin*Time.deltaTime);
+		arrowModel.RotateAroundLocal(Vector3.right, spin*Time.fixedDeltaTime);
 	}
-
+	
 	/**
 	 * Kills the arrow and calls management to reset the level
 	 **/
 	public void Die() {//Brendan: Oooh, this is fancy now!
 		//Instantiate the Explosion
 		GameObject d = Instantiate(explosion, transform.position, transform.rotation) as GameObject;
-
+		
 		//Inform Management of the event
 		Debug.Log("Arrow: Calling GameManagement.ArrowExploded()");
 		mgmt.ArrowExploded(d);
-
+			
 		//Destroy this Arrow
 		Destroy(gameObject);
 	}
-
+	
 	//Getters and Setters
 	public float GetFuel(){
 		return fuel;
 	}//Brendan: Would a setFuel method be helpful here?
-	public void SetFuel(float f){//Brendan: I wrote one for the hell of it, just in case.
-		fuel = f;
-	}
 	public float GetHealth(){
 		return health;
 	}
@@ -179,6 +139,6 @@ public class Arrow : MonoBehaviour {
 		fuel -= spent;
 	}
 	public float GetTopSpeed() {
-		return maxSpeed;
+		return stdTopSpeed;
 	}
 }
